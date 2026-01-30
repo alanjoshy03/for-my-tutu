@@ -1,0 +1,2811 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For my Tutuu ✨</title>
+
+    <!--
+    Author: Alan Joshy 
+    Mail ID: alanjoshy.info@gmail.com
+    Used Lang: HTML, CSS, JavaScript
+    -->
+
+    <!-- Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Indie+Flower&family=Shadows+Into+Light&family=Satisfy&family=Poppins:wght@300;400;600&display=swap"
+        rel="stylesheet">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <style>
+        :root {
+            --lavender-light: #E6E6FA;
+            --lavender-med: #D1C4E9;
+            --lavender-dark: #7E57C2;
+            --lavender-star: #B39DDB;
+            --text-dark: #333;
+            --text-med: #555;
+            --accent-pink: #ff6b6b;
+            --paper-texture: url('https://www.transparenttextures.com/patterns/cream-paper.png');
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-snap-type: y mandatory;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(120deg, var(--lavender-light) 0%, #F3E5F5 100%);
+            overflow-x: hidden;
+            color: var(--text-dark);
+            scroll-behavior: smooth;
+            cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'  width='40' height='40' viewport='0 0 100 100' style='fill:black;font-size:32px;'><text y='50%'>🪻</text></svg>") 16 0, auto;
+            min-height: 100vh;
+            zoom: 1;
+            /* 100% default scale */
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+
+        /* Sparkle Trail */
+        .sparkle {
+            position: absolute;
+            pointer-events: none;
+            width: 15px;
+            height: 15px;
+            background: radial-gradient(circle, #E1BEE7, #7E57C2);
+            /* Soft lavender to purple */
+            border-radius: 50%;
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+            animation: sparkle-fade 1s forwards;
+            z-index: 100000;
+        }
+
+        @keyframes sparkle-fade {
+            0% {
+                transform: scale(1) rotate(0deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(0) rotate(180deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes gradientBG {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        /* - Floating Hearts Background - */
+        #hearts-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .heart,
+        .sparkle,
+        .hanging-photo,
+        .clothesline-track {
+            will-change: transform, opacity;
+        }
+
+        .heart {
+            position: absolute;
+            color: #fff;
+            opacity: 0.8;
+            animation: fall linear infinite;
+            text-shadow: 0 0 5px rgba(255, 182, 193, 0.8);
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
+
+        /* - Components - */
+        .glass,
+        .kawaii-box {
+            background: #fff;
+            padding: 40px;
+            max-width: 650px;
+            width: 90%;
+            margin: 0 auto;
+            position: relative;
+            box-shadow: 10px 10px 0px rgba(0, 0, 0, 0.1);
+            border: 3px solid var(--text-dark);
+            transform: rotate(1deg);
+            z-index: 5;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .kawaii-box {
+            background: #fff0f5;
+        }
+
+        .glass:hover,
+        .kawaii-box:hover {
+            transform: rotate(0deg) scale(1.02);
+            box-shadow: 12px 12px 0px rgba(0, 0, 0, 0.15);
+        }
+
+        .answer-btn {
+            background: white;
+            border: 3px solid var(--lavender-star);
+            color: var(--lavender-dark);
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            padding: 15px 30px;
+            border-radius: 50px;
+            margin: 10px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 5px 0 #9575CD;
+        }
+
+        /* - Scrappy Paper Letter Section - */
+        .scrappy-wrapper {
+            margin: clamp(10px, 2vh, 20px) auto;
+            max-width: 750px;
+            width: 95%;
+            position: relative;
+            padding: clamp(10px, 1.5vh, 20px);
+            transform: rotate(-4deg);
+        }
+
+        .letter-paper {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #fcfaf7;
+            /* Off-white paper */
+            filter: url(#torn-paper);
+            /* Filter applied ONLY to paper */
+            box-shadow: 0 10px 30px rgba(126, 87, 194, 0.2);
+            z-index: 1;
+            /* Fold Creases */
+            background-image:
+                linear-gradient(135deg, transparent 49%, rgba(0, 0, 0, 0.03) 50%, transparent 51%),
+                linear-gradient(45deg, transparent 49%, rgba(0, 0, 0, 0.02) 50%, transparent 51%),
+                linear-gradient(transparent 98%, rgba(0, 0, 0, 0.01) 99%);
+            background-size: 100% 100%, 100% 100%, 100% 2em;
+        }
+
+        /* Fold line details */
+        .letter-paper::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent 40%, rgba(0, 0, 0, 0.02) 41%, transparent 42%);
+            pointer-events: none;
+        }
+
+        .letter-content {
+            position: relative;
+            z-index: 10;
+            /* Above the filtered paper */
+            padding: clamp(20px, 4vh, 40px) clamp(15px, 3vw, 30px);
+            text-align: left;
+            font-family: 'Satisfy', cursive;
+            font-size: clamp(1rem, 2.2vh, 1.35rem);
+            line-height: 1.35;
+            color: #333;
+        }
+
+        .letter-content p {
+            margin-bottom: clamp(10px, 1.5vh, 20px);
+            max-width: 95%;
+        }
+
+        .letter-content h2 {
+            margin-bottom: clamp(20px, 3vh, 30px);
+            /* Reduced from 40px */
+            font-family: 'Satisfy', cursive;
+            color: #7E57C2;
+            /* Purple */
+            font-size: 2.2rem;
+            /* Added explicit size reduction */
+        }
+
+        /* Sub-layer for depth */
+        .letter-shadow {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.05);
+            z-index: 0;
+            filter: blur(8px) url(#torn-paper);
+        }
+
+        /* - Reveal Image - */
+        .reveal-img {
+            max-width: 100%;
+            border-radius: 20px;
+            margin-top: 20px;
+            box-shadow: 0 10px 40px rgba(126, 87, 194, 0.3);
+            animation: popIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes popIn {
+            0% {
+                transform: scale(0.5);
+                opacity: 0;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        footer {
+            padding: 40px;
+            text-align: center;
+            color: white;
+            font-size: 0.9rem;
+            margin-top: auto;
+        }
+
+        /* Mobile adjustments */
+        @media (max-width: 600px) {
+            .hero h1 {
+                font-size: 3rem;
+            }
+
+            .section {
+                padding: 40px 15px;
+            }
+
+            .letter {
+                padding: 30px;
+            }
+        }
+
+        /* - Bokeh Background - */
+        .bokeh {
+            position: fixed;
+            width: 40vw;
+            height: 40vw;
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: 0;
+            opacity: 0.6;
+            animation: moveBokeh 20s infinite alternate;
+        }
+
+        .bokeh:nth-child(1) {
+            top: -10%;
+            left: -10%;
+            background: #ffdac1;
+            animation-duration: 25s;
+        }
+
+        .bokeh:nth-child(2) {
+            bottom: -10%;
+            right: -10%;
+            background: #ff9aa2;
+            animation-duration: 30s;
+        }
+
+        .bokeh:nth-child(3) {
+            top: 40%;
+            left: 40%;
+            background: #fff5ba;
+            width: 30vw;
+            height: 30vw;
+            animation-duration: 35s;
+        }
+
+        @keyframes moveBokeh {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+
+            100% {
+                transform: translate(100px, 50px) rotate(20deg);
+            }
+        }
+
+        /* - Animations - */
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* - Scroll Reveal Classes - */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+            visibility: hidden;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+            visibility: visible;
+        }
+
+        /* - SPLIT ANIMATIONS - */
+
+        /* 1. Smooth Pop (For Text/Titles) */
+        .reveal-pop {
+            opacity: 0;
+            transform: translateY(30px) scale(0.95);
+            transition: all 1.0s cubic-bezier(0.25, 1, 0.5, 1);
+            visibility: hidden;
+        }
+
+        .reveal-pop.active {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            visibility: visible;
+        }
+
+        /* 2. Smooth Fade (Trigger Only - Visibilty handled by children) */
+        .reveal-fade {
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+            visibility: hidden;
+        }
+
+        .reveal-fade.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* -- WIND HIT ANIMATION (In-Place - Smoother) -- */
+        @keyframes dropWind {
+            0% {
+                transform: rotate(60deg);
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 1;
+            }
+
+            50% {
+                transform: rotate(-10deg);
+                /* Much gentler recoil */
+            }
+
+            75% {
+                transform: rotate(4deg);
+            }
+
+            100% {
+                transform: rotate(2deg);
+                opacity: 1;
+            }
+        }
+
+        /* Generic Reveal Animation */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 1s ease-out;
+            visibility: hidden;
+            /* Ensure it's not clickable while hidden */
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+            visibility: visible;
+        }
+
+        /* Fix for elements that have their own transform (like rotation) */
+        .scrappy-wrapper.reveal {
+            transform: translateY(40px) rotate(-4deg);
+        }
+
+        .scrappy-wrapper.reveal.active {
+            transform: translateY(0) rotate(-4deg);
+        }
+
+        /* Staggered delays for children */
+        .reveal-delay-1 {
+            transition-delay: 0.2s;
+        }
+
+        .reveal-delay-2 {
+            transition-delay: 0.4s;
+        }
+
+        .reveal-delay-3 {
+            transition-delay: 0.6s;
+        }
+
+
+        @keyframes peek {
+            0% {
+                transform: translateY(0) rotate(5deg);
+            }
+
+            100% {
+                transform: translateY(-15px) rotate(-5deg);
+            }
+        }
+
+        /* Washi Tape Effects */
+        .tape-corner-tl,
+        .tape-corner-br {
+            position: absolute;
+            width: 100px;
+            height: 30px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+            z-index: 10;
+        }
+
+        .tape-corner-tl {
+            top: -15px;
+            left: -15px;
+            background: rgba(179, 157, 219, 0.8);
+            transform: rotate(-35deg);
+        }
+
+        .tape-corner-br {
+            bottom: -15px;
+            right: -15px;
+            background: rgba(126, 87, 194, 0.8);
+            transform: rotate(-35deg);
+        }
+
+        .glass-card:hover {
+            transform: translateY(-8px) scale(1.05);
+            box-shadow: 0 25px 50px rgba(255, 107, 107, 0.25);
+            border-color: #ff9aa2;
+        }
+
+        /* --- Walking Bear Animation (Not Working)--- */
+        .bear-wrapper {
+            position: absolute;
+            bottom: 10px;
+            /* Adjusted bottom */
+            left: -150px;
+            width: 120px;
+            height: auto;
+            z-index: 100;
+            /* Increased Z-Index */
+            animation: walkRight 15s linear infinite;
+            cursor: pointer;
+        }
+
+        .bear-wrapper:hover {
+            animation-play-state: paused;
+            /* Catch him! */
+        }
+
+        .walking-bear {
+            width: 100%;
+            height: auto;
+        }
+
+        /* Cute Speech Bubble */
+        .bear-bubble {
+            position: absolute;
+            bottom: 100%;
+            /* Above bear */
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            padding: 10px 15px;
+            border-radius: 20px;
+            border: 2px solid #B39DDB;
+            /* Lavender */
+            font-family: 'Indie Flower', cursive;
+            font-size: 1rem;
+            color: #7E57C2;
+            /* Purple */
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            pointer-events: none;
+            margin-bottom: 10px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .bear-wrapper:hover .bear-bubble {
+            opacity: 1;
+            transform: translateX(-50%) translateY(-5px);
+        }
+
+        .bear-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 6px 6px 0;
+            border-style: solid;
+            border-color: #B39DDB transparent transparent transparent;
+        }
+
+        /* -- SVG Walking Animation (Not Working) -- */
+        .bear-svg {
+            width: 100%;
+            height: 100%;
+            overflow: visible;
+        }
+
+        .bear-leg {
+            transform-box: fill-box;
+            transform-origin: top center;
+            animation: moveLeg 0.25s ease-in-out infinite alternate;
+            /* Running speed! */
+        }
+
+        .bear-leg.left {
+            animation-delay: 0s;
+        }
+
+        .bear-leg.right {
+            animation-delay: 0.12s;
+            /* Half of 0.25s */
+        }
+
+        @keyframes moveLeg {
+            from {
+                transform: rotate(-20deg);
+            }
+
+            to {
+                transform: rotate(20deg);
+            }
+        }
+
+        @keyframes walkRight {
+            0% {
+                left: 0;
+                /* Start visible on screen */
+                transform: scaleX(1);
+            }
+
+            45% {
+                left: 45%;
+                transform: scaleX(1);
+            }
+
+            50% {
+                left: 50%;
+                transform: scaleX(1);
+            }
+
+            /* Pause / walking */
+            100% {
+                left: 100vw;
+                transform: scaleX(1);
+            }
+        }
+
+        /* Simplified walkRight animation */
+
+
+        /* -- Kawaii Toast Notification (Lavender Style) -- */
+        .kawaii-toast {
+            position: fixed;
+            top: 10%;
+            left: 50%;
+            transform: translateX(-50%) translateY(-100px) scale(0.8);
+            /* Start hidden above */
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px 30px;
+            border-radius: 50px;
+            box-shadow: 0 10px 30px rgba(126, 87, 194, 0.3);
+            /* Purple Shadow */
+            border: 3px solid #B39DDB;
+            /* Lavender Border */
+            color: #7E57C2;
+            /* Purple Text */
+            font-family: 'Indie Flower', cursive;
+            font-size: 1.3rem;
+            font-weight: bold;
+            z-index: 10000;
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            /* Bouncy */
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            pointer-events: none;
+        }
+
+        .kawaii-toast.show {
+            transform: translateX(-50%) translateY(0) scale(1);
+            opacity: 1;
+        }
+
+        /* - Floating Clouds/Stars - */
+        .cloud {
+            position: absolute;
+            opacity: 0.8;
+            z-index: 0;
+            animation: floatCloud 20s linear infinite;
+            filter: drop-shadow(2px 2px 5px rgba(0, 0, 0, 0.1));
+        }
+
+        @keyframes floatCloud {
+            0% {
+                transform: translateX(0);
+            }
+
+            50% {
+                transform: translateX(20px);
+            }
+
+            100% {
+                transform: translateX(0);
+            }
+        }
+
+        /* - Kawaii Box (Scrapbook Style - Lavender) - */
+        .quiz-wrapper {
+            position: relative;
+            max-width: 600px;
+            width: clamp(280px, 90%, 600px);
+            margin: clamp(20px, 4vh, 40px) auto;
+            transform: rotate(1deg);
+            z-index: 5;
+        }
+
+        .quiz-enhanced {
+            background: linear-gradient(135deg, #F3E5F5, #E1BEE7);
+            /* Soft Lavender Gradient */
+            padding: clamp(25px, 6vh, 50px);
+            border-radius: 30px;
+            border: 4px solid #D1C4E9;
+            /* Lavender Border */
+            box-shadow: 0 15px 35px rgba(126, 87, 194, 0.3);
+            /* Purple Shadow */
+            position: relative;
+            text-align: center;
+            z-index: 10;
+            /* Above bear */
+            background-clip: padding-box;
+            /* Ensure bg covers */
+        }
+
+        .scroll-heart {
+            width: 40px;
+            height: 40px;
+            margin: 0 auto;
+            position: relative;
+            /* animation: bounce 2s infinite; Optional, if keyframes exist */
+        }
+
+        .quiz-enhanced::before {
+            /* Speech bubble tail effect if desired, or decoration */
+            content: '🌸';
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            font-size: 3rem;
+            animation: bounce 2s infinite;
+        }
+
+        .quiz-enhanced h1,
+        .quiz-enhanced h2 {
+            font-family: 'Dancing Script', cursive;
+            color: #7E57C2;
+            /* Purple */
+            margin-bottom: 25px;
+        }
+
+        .quiz-enhanced h2 {
+            font-size: 2.5rem;
+        }
+
+        .quiz-enhanced h1 {
+            font-size: 3rem;
+        }
+
+        .answer-btn {
+            background: white;
+            border: 3px solid #B39DDB;
+            /* Lavender Border */
+            color: #7E57C2;
+            /* Purple Text */
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            padding: 15px 30px;
+            border-radius: 50px;
+            margin: 10px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 5px 0 #9575CD;
+            /* Darker Purple shadow */
+        }
+
+        .answer-btn:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 8px 0 #7E57C2;
+            background: #EDE7F6;
+        }
+
+        .answer-btn.yes {
+            background: #B39DDB;
+            /* Lavender */
+            color: #ffffff;
+            /* White text */
+            box-shadow: 0 5px 0 #7E57C2;
+            border: none;
+        }
+
+        .answer-btn.yes:hover {
+            background: #9575CD;
+        }
+
+
+
+        .answer-btn:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 #7E57C2;
+        }
+
+        .answer-btn.no {
+            background-color: #f0f0f0;
+            color: #555;
+            border: 3px solid #ccc;
+            /* Neutral border */
+            box-shadow: 0 5px 0 #bbb;
+        }
+
+        .answer-btn.no:hover {
+            background-color: #e6e6e6;
+            box-shadow: 0 8px 0 #aaa;
+        }
+
+        .chevron {
+            position: absolute;
+            width: 20px;
+            height: 4px;
+            opacity: 0;
+            transform: scale3d(0.5, 0.5, 0.5);
+            animation: move-chevron 3s ease-out infinite;
+        }
+
+        .chevron:before,
+        .chevron:after {
+            content: ' ';
+            position: absolute;
+            top: 0;
+            height: 100%;
+            width: 51%;
+            background: #555;
+        }
+
+        .chevron:before {
+            left: 0;
+            transform: skew(0deg, 30deg);
+        }
+
+        .chevron:after {
+            right: 0;
+            width: 50%;
+            transform: skew(0deg, -30deg);
+        }
+
+        .chevron:first-child {
+            animation: move-chevron 3s ease-out 1s infinite;
+        }
+
+        .chevron:nth-child(2) {
+            animation: move-chevron 3s ease-out 2s infinite;
+        }
+
+        .chevron:before,
+        .chevron:after {
+            background: #555;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+        }
+
+        @keyframes move-chevron {
+            25% {
+                opacity: 1;
+            }
+
+            33% {
+                opacity: 1;
+                transform: translateY(30px);
+            }
+
+            67% {
+                opacity: 1;
+                transform: translateY(40px);
+            }
+
+            100% {
+                opacity: 0;
+                transform: translateY(55px) scale3d(0.5, 0.5, 0.5);
+            }
+        }
+
+        /* - Global Sections & Layout - */
+        .section,
+        .hero {
+            min-height: 100vh;
+            padding: clamp(30px, 4vh, 60px) 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+            z-index: 1;
+            position: relative;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hero {
+            scroll-snap-align: start;
+        }
+
+        .section {
+            scroll-snap-align: start;
+        }
+
+        .hero-title {
+            margin-bottom: clamp(40px, 8vh, 80px);
+            font-family: 'Dancing Script', cursive;
+            font-size: clamp(3rem, 10vh, 5rem);
+            background: linear-gradient(135deg, #a675c5 0%, #be7592 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(2px 2px 0px rgba(255, 255, 255, 0.5));
+            line-height: 1.2;
+        }
+
+        .kawaii-text {
+            font-family: 'Indie Flower', cursive;
+            font-size: clamp(1.4rem, 4vh, 1.8rem);
+            line-height: 1.2;
+            color: var(--text-med);
+            margin-bottom: 5px;
+        }
+
+        .time-count {
+            font-family: 'Indie Flower', cursive;
+            font-size: clamp(2rem, 6vh, 2.8rem);
+            color: var(--accent-pink);
+            margin: 5px 0;
+            font-weight: bold;
+            text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.05);
+            line-height: 1.1;
+        }
+
+        .peeking-bear {
+            position: absolute;
+            top: -95px;
+            right: 20px;
+            width: 120px;
+            z-index: 10;
+            filter: drop-shadow(2px 2px 0px rgba(0, 0, 0, 0.1));
+            animation: peek 3s infinite alternate;
+        }
+
+        /* - Envelope / Paper Ball Styles - */
+        .envelope-wrapper {
+            width: 280px;
+            height: 180px;
+            background: var(--lavender-star);
+            margin: 0 auto;
+            position: relative;
+            border-radius: 10px;
+            box-shadow: 0 15px 35px rgba(126, 87, 194, 0.4);
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .envelope-wrapper:hover {
+            animation: wiggle 2s ease-in-out infinite;
+        }
+
+        @keyframes wiggle {
+            0% {
+                transform: rotate(-3deg);
+            }
+
+            50% {
+                transform: rotate(3deg);
+            }
+
+            100% {
+                transform: rotate(-3deg);
+            }
+        }
+
+        .envelope-flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 140px solid transparent;
+            border-right: 140px solid transparent;
+            border-top: 100px solid #9575CD;
+            z-index: 5;
+            filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.2));
+            transform-origin: top;
+            transition: transform 0.5s ease;
+        }
+
+        .envelope-seal {
+            width: 50px;
+            height: 50px;
+            background: radial-gradient(circle at 30% 30%, #ff5252, #d32f2f);
+            border-radius: 50%;
+            position: absolute;
+            top: 55px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 6;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.8);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .sticker {
+            position: absolute;
+            font-size: 2rem;
+            opacity: 0.9;
+            z-index: 4;
+            filter: drop-shadow(2px 2px 0 rgba(0, 0, 0, 0.1));
+        }
+
+        .paper-ball {
+            width: 100px;
+            height: 100px;
+            background: #00000000;
+            border-radius: 50%;
+            position: fixed;
+            z-index: 10005;
+            box-shadow: 2px 5px 15px rgba(0, 0, 0, 0);
+            background-image: repeating-linear-gradient(45deg, #f0f0f000 0, #f0f0f000 2px, #ffffff00 2px, #ffffff00 10px);
+        }
+
+        @keyframes unfoldLetter {
+            0% {
+                transform: scale(0.2);
+                opacity: 0;
+            }
+
+            60% {
+                transform: scale(1.05) rotate(2deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(1) rotate(-4deg);
+                opacity: 1;
+            }
+        }
+
+        /* - Clothesline Gallery - */
+        #clothesline-scroll-container {
+            position: relative;
+            width: 100%;
+            height: min(800px, 85vh);
+            overflow: hidden;
+            padding: 20px 0;
+            mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+        }
+
+        .clothesline-row {
+            position: relative;
+            width: 100%;
+            height: calc(50% - 10px);
+            margin-bottom: 20px;
+            overflow: visible;
+        }
+
+        .clothesline-track {
+            display: flex;
+            width: max-content;
+            position: absolute;
+            top: 0;
+        }
+
+        .clothesline-track:hover {
+            animation-play-state: paused !important;
+        }
+
+        .scroll-left .clothesline-track {
+            animation: scrollLeft 80s linear infinite;
+        }
+
+        .scroll-right .clothesline-track {
+            animation: scrollRight 80s linear infinite;
+        }
+
+        @keyframes scrollLeft {
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(-33.3333%);
+            }
+        }
+
+        @keyframes scrollRight {
+            0% {
+                transform: translateX(-33.3333%);
+            }
+
+            100% {
+                transform: translateX(0);
+            }
+        }
+
+        .track-rope {
+            position: absolute;
+            top: 40px;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: #8D6E63;
+            border-bottom: 1px solid #5D4037;
+            z-index: 1;
+        }
+
+        .hanging-photo {
+            display: inline-block;
+            vertical-align: top;
+            margin: 0 30px;
+            position: relative;
+            transform-origin: 50% -20px;
+            /* Initially hidden/displaced for the wind hit (Rotated high) */
+            transform: rotate(60deg);
+            opacity: 0;
+            margin-top: 10px;
+            z-index: 2;
+        }
+
+        /* Activate Drop + Chain Sway when parent (.reveal-fade) is active */
+        /* Activate Drop + Chain Sway when parent (.reveal-fade) is active */
+        /* Activate Drop + Chain Sway when parent (.reveal-fade) is active */
+        .reveal-fade.active .hanging-photo {
+            animation-name: dropWind, sway;
+            animation-duration: 2.5s, 6s;
+            /* Sway slowed to 6s for evenness */
+            animation-timing-function: cubic-bezier(0.25, 1, 0.5, 1), ease-in-out;
+            animation-iteration-count: 1, infinite;
+            animation-fill-mode: forwards, none;
+            /* Forwards for drop to keep it in place */
+            /* Delay set via inline JS to randomize sway duration */
+        }
+
+        .hanging-photo::before {
+            content: '';
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 8px;
+            height: 25px;
+            background: #D7CCC8;
+            border-left: 2px solid #5D4037;
+            border-radius: 2px;
+            z-index: 5;
+            box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        .photo-inner {
+            background: white;
+            padding: 12px 12px 45px 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 2px;
+            transition: transform 0.3s ease;
+            width: 190px;
+        }
+
+        .photo-inner:hover {
+            transform: scale(1.05) rotate(0deg) !important;
+            z-index: 10;
+        }
+
+        .photo-inner img {
+            width: 100%;
+            height: 210px;
+            object-fit: cover;
+            object-position: center;
+            display: block;
+            background: #f0f0f0;
+        }
+
+        .photo-inner p {
+            margin-top: 10px;
+            font-family: 'Indie Flower', cursive;
+            color: #555;
+            font-size: 1.1rem;
+            text-align: center;
+        }
+
+        @keyframes sway {
+            0% {
+                transform: rotate(2deg);
+            }
+
+            50% {
+                transform: rotate(-2deg);
+            }
+
+            100% {
+                transform: rotate(2deg);
+            }
+        }
+
+        /* - Scroll Indicators - */
+        .scroll-down-container {
+            position: relative;
+            text-align: center;
+            margin-bottom: 30px;
+            cursor: pointer;
+            opacity: 0.9;
+        }
+
+        .scroll-chevron {
+            display: block;
+            width: 20px;
+            height: 20px;
+            border-bottom: 3px solid #555;
+            border-right: 3px solid #555;
+            transform: rotate(45deg);
+            margin: -10px auto;
+            animation: chevronFade 2s infinite;
+            opacity: 0;
+        }
+
+        .scroll-chevron:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .scroll-chevron:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        .scroll-text {
+            font-family: 'Indie Flower', cursive;
+            font-size: 1.5rem;
+            color: var(--text-med);
+            margin-top: 15px;
+            letter-spacing: 1px;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.8), 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        @keyframes chevronFade {
+            0% {
+                opacity: 0;
+                transform: rotate(45deg) translate(-5px, -5px);
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0;
+                transform: rotate(45deg) translate(5px, 5px);
+            }
+        }
+
+        /* - Quiz Box Transitions - */
+        #quiz-box {
+            transition: opacity 0.2s ease-in-out;
+            opacity: 1;
+            /* Default visible */
+        }
+
+        /* - Stamp Animation - */
+        @keyframes stampIn {
+            0% {
+                opacity: 0;
+                transform: scale(2) rotate(-10deg);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(0.8) rotate(-10deg);
+            }
+
+            100% {
+                opacity: 1;
+                transform: scale(1) rotate(-10deg);
+            }
+        }
+
+        .stamp {
+            color: #d32f2f;
+            border: 3px solid #d32f2f;
+            padding: 5px 10px;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            display: inline-block;
+            transform: rotate(-10deg);
+            animation: stampIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+            text-transform: uppercase;
+        }
+
+        /* - Seal Animation - */
+        @keyframes sealSlam {
+            0% {
+                transform: scale(3) rotate(0deg);
+                opacity: 0;
+            }
+
+            40% {
+                transform: scale(0.9) rotate(-5deg);
+                opacity: 1;
+            }
+
+            60% {
+                transform: scale(1.1) rotate(-5deg);
+            }
+
+            100% {
+                transform: scale(1) rotate(-5deg);
+                opacity: 1;
+            }
+        }
+
+        /* - Cloud Decor - */
+        .cloud {
+            position: absolute;
+            opacity: 0.8;
+            z-index: 0;
+            animation: floatCloud 10s ease-in-out infinite alternate;
+            filter: drop-shadow(2px 2px 5px rgba(0, 0, 0, 0.1));
+            pointer-events: none;
+        }
+
+        @keyframes floatCloud {
+            from {
+                transform: translateX(0);
+            }
+
+            to {
+                transform: translateX(20px);
+            }
+        }
+
+        .letter-signature {
+            text-align: right;
+            font-weight: 600;
+            font-size: clamp(1.1rem, 2.2vh, 1.35rem);
+            margin-top: clamp(5px, 1.5vh, 15px);
+        }
+
+        /* Splash Screen - Floating Organic Redesign */
+        .splash-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(120deg, var(--lavender-light) 0%, #F3E5F5 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 99999;
+            transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1), visibility 1s;
+            overflow: hidden;
+        }
+
+        .splash-overlay.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        #splash-hearts {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .splash-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 10;
+            text-align: center;
+            padding: 20px;
+            animation: floatingFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes floatingFloat {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .splash-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: clamp(2.2rem, 8vw, 4rem);
+            color: #4a235a;
+            margin-bottom: 40px;
+            line-height: 1.25;
+            font-weight: 700;
+            text-shadow: 0 4px 20px rgba(255, 255, 255, 0.9), 0 0 40px rgba(179, 157, 219, 0.4);
+            letter-spacing: -0.5px;
+        }
+
+        .splash-title span {
+            display: block;
+            margin-top: 10px;
+            font-size: 1.2em;
+        }
+
+        .splash-enter-btn {
+            background: linear-gradient(135deg, #B39DDB, #9575CD);
+            color: white;
+            border: none;
+            padding: 20px 70px;
+            font-size: 1.5rem;
+            border-radius: 100px;
+            /* Capsule Shape */
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            box-shadow: 0 15px 35px rgba(126, 87, 194, 0.4), 0 0 20px rgba(255, 255, 255, 0.4);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            letter-spacing: 1.5px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .splash-enter-btn:hover {
+            transform: translateY(-8px) scale(1.1);
+            box-shadow: 0 20px 45px rgba(126, 87, 194, 0.5), 0 0 30px rgba(255, 255, 255, 0.6);
+            letter-spacing: 2.5px;
+        }
+
+        .splash-enter-btn:active {
+            transform: translateY(2px) scale(0.95);
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 0.8;
+            }
+
+            50% {
+                transform: scale(1.05);
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 0.8;
+            }
+        }
+
+        /* Ghost Emojis for Depth */
+        .ghost-emoji {
+            position: absolute;
+            font-size: clamp(8rem, 20vw, 15rem);
+            opacity: 0.08;
+            pointer-events: none;
+            z-index: 1;
+            filter: blur(1px);
+            animation: drift 25s ease-in-out infinite alternate;
+        }
+
+        @keyframes drift {
+            from {
+                transform: translate(-15%, -15%) rotate(-10deg);
+            }
+
+            to {
+                transform: translate(15%, 15%) rotate(10deg);
+            }
+        }
+
+
+
+        .site-footer {
+            position: absolute;
+            bottom: 8px;
+            width: 100%;
+            text-align: center;
+            color: rgba(44, 38, 38, 0.658);
+            font-size: 0.75rem;
+            pointer-events: none;
+            font-family: 'Poppins', sans-serif;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Splash Screen -->
+    <div id="splash-overlay" class="splash-overlay">
+        <div id="splash-hearts"></div>
+        <div class="ghost-emoji" style="top: 10%; left: 10%;">⚖️</div>
+        <div class="ghost-emoji" style="bottom: 10%; right: 10%;">💜</div>
+        <div class="splash-content">
+            <h1 class="splash-title">Nandana Sunil,<br>Permission to Proceed? ⚖️ 💜</h1>
+            <button class="splash-enter-btn" onclick="unlockExperience()">PROCEED ✨</button>
+            <p class="splash-audio-note"
+                style="color: #6a1b9a; font-family: 'Poppins', sans-serif; font-size: 0.85rem; margin-top: 15px; font-weight: 500; letter-spacing: 0.5px; opacity: 0.7; animation: pulse 2s infinite; pointer-events: none;">
+                Headphones on & Volume up!
+            </p>
+        </div>
+    </div>
+
+    <!-- Background Music -->
+    <audio id="bg-music" loop preload="auto">
+        <source src="Music/bg.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="quiz-music" preload="auto">
+        <source src="Music/quiz.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- SFX Layer -->
+    <audio id="sfx-yes" preload="auto">
+        <source src="Music/yes.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="sfx-no" preload="auto">
+        <source src="Music/no.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="sfx-wrong" preload="auto">
+        <source src="Music/wrong.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="sfx-wehe" preload="auto">
+        <source src="Music/wehe.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="sfx-objection" preload="auto">
+        <source src="Music/objection.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="sfx-tada" preload="auto">
+        <source src="Music/tada.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="sfx-keyboard" preload="auto">
+        <source src="Music/keyboard.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Bokeh Background -->
+    <div class="bokeh"></div>
+    <div class="bokeh"></div>
+    <div class="bokeh"></div>
+
+    <div id="hearts-container"></div>
+
+    <!-- SVG Filter for Torn Edges -->
+    <svg style="position: absolute; width: 0; height: 0;" aria-hidden="true" focusable="false">
+        <defs>
+            <filter id="torn-paper" x="-20%" y="-20%" width="140%" height="140%">
+                <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="5" result="noise" />
+                <feDisplacementMap in="SourceGraphic" in2="noise" scale="20" xChannelSelector="R"
+                    yChannelSelector="G" />
+            </filter>
+        </defs>
+    </svg>
+
+    <!-- HERO -->
+    <section id="hero-section" class="hero locked">
+        <h1 class="reveal hero-title" style="transition-delay: 0.2s;">Hey Nandu..! ✨</h1>
+
+        <!-- Kawaii Scrapbook Box -->
+        <div class="kawaii-box reveal" style="transition-delay: 0.5s; padding: clamp(20px, 4vh, 40px);">
+            <div class="tape-corner-tl"></div>
+            <div class="tape-corner-br"></div>
+
+            <img src="https://media.tenor.com/N6s_shn4w3gAAAAi/cute-bear.gif" class="peeking-bear" alt="Peeking Bear">
+
+            <p class="kawaii-text">You know what... it's been</p>
+            <h3 id="time-count" class="time-count">Calculating...</h3>
+            <p class="kawaii-text">counting moments with you..</p>
+        </div>
+
+        <p class="reveal"
+            style="transition-delay: 0.8s; font-size: clamp(1rem, 2.5vh, 1.3rem); color: #4a235a; margin-top: clamp(30px, 6vh, 60px); font-family: 'Poppins', sans-serif; text-shadow: none; font-weight: 600;">
+            A little something for my Tutuu, check it out... 💌
+        </p>
+
+        <!-- CSS Animated Scroll Indicator -->
+        <div class="reveal" style="margin-top: clamp(15px, 3vh, 30px); transition-delay: 1.2s; text-align: center;">
+            <div class="scroll-heart">
+                <div class="chevron"></div>
+                <div class="chevron"></div>
+                <div class="chevron"></div>
+            </div>
+            <p style="font-size: 0.85rem; color: #555; margin-top: 8px; font-family: 'Indie Flower', cursive;">Scroll
+                for Love</p>
+        </div>
+    </section>
+
+
+    <section id="gallery-section" class="section"
+        style="padding: clamp(10px, 2vh, 30px) 20px; min-height: 100vh; display: flex; flex-direction: column; justify-content: center;">
+        <h2 class="reveal-pop"
+            style="font-family: 'Dancing Script', cursive; font-size: clamp(2rem, 5vh, 2.5rem); color: #705d75; margin-bottom: 5px;">
+            Exhibit A: Evidence of Us ✨
+        </h2>
+
+        <div id="clothesline-scroll-container" class="reveal-fade reveal-delay-2">
+            <!-- Rows injected via JS -->
+        </div>
+
+        <p style="text-align: center; color: #888; font-size: 0.85rem; margin-top: 5px; margin-bottom: 5px;"
+            class="reveal-pop">
+            (Hover to pause the memories 🧺)
+        </p>
+
+        <!-- Scroll Down Surprise -->
+        <div class="reveal-pop reveal-delay-3" style="display: flex; justify-content: center; margin-bottom: 5px;">
+            <!-- No background pill, just the content -->
+            <div class="scroll-down-container"
+                onclick="document.getElementById('quiz-section').scrollIntoView({behavior: 'smooth'})"
+                style="padding: 5px;">
+
+                <div class="scroll-chevron"></div>
+                <div class="scroll-chevron"></div>
+                <div class="scroll-chevron"></div>
+
+                <p class="scroll-text" style="font-size: 1.2rem; margin-top: 5px;">Scroll for Love</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CSS Overrides for Compact View -->
+    <style>
+        #clothesline-scroll-container {
+            height: min(650px, 70vh);
+            /* Increased height slightly for bigger images */
+            margin: 10px 0;
+            overflow: visible;
+            /* Keep visible to allow sway overlap without clipping */
+        }
+
+        .clothesline-row {
+            height: 50%;
+            /* Strictly half the container */
+            margin-bottom: 0;
+        }
+
+        .photo-inner {
+            width: 180px;
+            /* Increased from 150px */
+            padding: 10px 10px 40px 10px;
+            /* Slightly larger padding */
+        }
+
+        .photo-inner img {
+            height: 200px;
+            /* Increased from 160px */
+        }
+
+        .hanging-photo {
+            margin: 0 25px;
+            /* Significantly increased gap (was 15px) */
+        }
+
+        .track-rope {
+            top: 30px;
+            /* Adjusted lower for bigger scale */
+        }
+    </style>
+    </section>
+
+    <!-- QUIZ -->
+    <section id="quiz-section" class="section" style="position: relative;">
+        <!-- Floating Atmosphere -->
+        <div class="cloud" style="top: 20%; left: 10%; font-size: 4rem;">☁️</div>
+        <div class="cloud" style="top: 15%; right: 15%; font-size: 3rem; animation-delay: 2s;">☁️</div>
+        <div class="cloud" style="bottom: 30%; left: 20%; font-size: 2.5rem; animation-delay: 5s;">⭐</div>
+        <div class="cloud" style="top: 40%; right: 5%; font-size: 2rem; animation-delay: 3s;">✨</div>
+
+        <div class="quiz-wrapper reveal" id="quiz-wrapper-main">
+            <div class="quiz-enhanced">
+                <div id="quiz-box">
+                    <h2>Ready for a question? 💭</h2>
+                    <button class="answer-btn" onclick="nextQuestion(1)">Yes, ask me!</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- HIDDEN LETTER -->
+        <div class="scrappy-wrapper" id="letter-wrapper-main" style="display: none;">
+            <div class="letter-shadow"></div>
+            <div class="letter-paper"></div>
+            <div class="letter-content">
+                <h2>Dear Nandu,</h2>
+                <p>
+                    I’ve been sitting here trying to put into words what you mean to me,
+                    and it’s harder than I thought—mostly because "friend" feels like
+                    such a small word for someone who occupies so much of my heart.
+                </p>
+                <p>
+                    You’ve become my safe space. In a world that’s constantly moving, you’re the one person who makes
+                    everything feel still and right.
+                    You are my favorite notification—the one that makes me pick up my phone with a smile before I’ve
+                    even read the message.
+                    Whether you’re being Nandu or just my Tutuu, I’ve realized that I adore every single version of
+                    you.
+                </p>
+                <p>
+                    Thank you for handling my craziness and for being the incredible, one-of-a-kind person you are.
+                    I don’t know exactly what the future looks like, but I do know that I want you in every part of it.
+                    I want more of our laughs, more of our "no" buttons running away, and a lot more "us."
+                </p>
+                <p>
+                    You make my life better just by being in it. I hope you know how much I truly, deeply care about
+                    you.
+                </p>
+
+                <p class="letter-signature">Always yours,<br>🦥</p>
+            </div>
+        </div>
+        <footer class="site-footer">
+            <p>Made with all the love in the world for my Kuchupuchuu.</p>
+        </footer>
+    </section>
+
+    <!-- AUDIO SYSTEM -->
+    <audio id="bg-music" loop>
+        <source src="Music/bg.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- SFX SYSTEM -->
+    <audio id="sfx-yes" src="Music/yes.mp3"></audio>
+    <audio id="sfx-no" src="Music/no.mp3"></audio>
+    <audio id="sfx-wrong" src="Music/wrong.mp3"></audio>
+    <audio id="sfx-wehe" src="Music/wehe.mp3"></audio>
+    <audio id="sfx-objection" src="Music/objection.mp3"></audio>
+    <audio id="sfx-tada" src="Music/tada.mp3"></audio>
+    <audio id="sfx-keyboard" src="Music/keyboard.mp3"></audio>
+    <audio id="sfx-quiz" src="Music/quiz.mp3"></audio>
+
+    <script>
+        // --- V13: Global Photo Data (Moved up for preloader) ---
+        const photoData = [
+            { url: "images/photo1.jpg", caption: "Remeber This?" },
+            { url: "images/photo2.jpg", caption: "Aishcreem" },
+            { url: "images/photo3.jpg", caption: "Silly Face" },
+            { url: "images/photo4.jpg", caption: "On the Floor!" },
+            { url: "images/photo5.jpg", caption: "Love Ya" },
+            { url: "images/photo6.jpg", caption: "Smile..!" },
+            { url: "images/photo7.jpg", caption: "Estetik" },
+            { url: "images/photo8.jpg", caption: "Fav Memory" },
+            { url: "images/photo9.jpg", caption: "Forever" },
+            { url: "images/photo10.jpg", caption: "Vroom Vroom" },
+            { url: "images/photo11.jpg", caption: "Let's Racee!" },
+            { url: "images/photo12.jpg", caption: "Adventure" }
+        ];
+
+        // --- SFX Manager ---
+        function playSound(id) {
+            const audio = document.getElementById('sfx-' + id);
+            if (audio) {
+                audio.currentTime = 0;
+                audio.volume = 0.6;
+                audio.play().catch(e => console.log('SFX block:', e));
+            }
+        }
+
+        // 1. Floating Lavender/Purple Animation
+        function createHeart() {
+            const container = document.getElementById('hearts-container');
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            // Lavender & Purple Theme Emojis
+            heart.innerHTML = ['🪻', '💜', '✨', '🍇', '☂️', '🫧'][Math.floor(Math.random() * 6)];
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = Math.random() * 3 + 3 + 's';
+            heart.style.fontSize = Math.random() * 20 + 10 + 'px';
+            // Random blur for depth
+            if (Math.random() > 0.5) heart.style.filter = 'blur(1px)';
+            container.appendChild(heart);
+
+            setTimeout(() => {
+                heart.remove();
+            }, 6000);
+        }
+        setInterval(createHeart, 400);
+
+        //  1.1 Magic Wand Sparkle Trail
+        document.addEventListener('mousemove', function (e) {
+            // Throttle: Only create sparkles 40% of the time for a lighter trail
+            if (Math.random() > 0.4) return;
+
+            // Create sparkle
+            const sparkle = document.createElement('div');
+            sparkle.classList.add('sparkle');
+            sparkle.style.left = e.pageX + 'px';
+            sparkle.style.top = e.pageY + 'px';
+
+            // Random size variation (Balanced trace)
+            const size = Math.random() * 15 + 8;
+            sparkle.style.width = size + 'px';
+            sparkle.style.height = size + 'px';
+
+            document.body.appendChild(sparkle);
+
+            // Remove after animation
+            setTimeout(() => {
+                sparkle.remove();
+            }, 1000);
+        });
+
+        //  1.5 Friendship Counter
+        function updateCounter() {
+            const startDate = new Date("2018-06-05T00:00:00"); // June 5, 2018
+            const now = new Date();
+            const diff = now - startDate;
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+            const minutes = Math.floor((diff / 1000 / 60) % 60);
+            const seconds = Math.floor((diff / 1000) % 60);
+
+            document.getElementById("time-count").innerText =
+                `${days} Days, ${hours} Hours, ${minutes} Mins, ${seconds} Secs`;
+        }
+        setInterval(updateCounter, 1000);
+        updateCounter(); // Run immediately
+
+        // 1.6 Contextual BGM Manager 
+        const bgMusic = document.getElementById('bg-music');
+        let bgmInitialized = false;
+        let fadeInterval = null;
+
+        // Auto-pause BG Music when tab is inactive
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                if (!bgMusic.paused) {
+                    bgMusic.pause();
+                }
+            } else {
+                // Resume only if we have started the experience
+                if (bgmInitialized && bgMusic.paused) {
+                    bgMusic.play().catch(e => console.log("Auto-resume failed:", e));
+                }
+            }
+        });
+
+        // NEW: Splash Emoji Rain 
+        let splashRainInterval = setInterval(() => {
+            const container = document.getElementById('splash-hearts');
+            if (!container) return;
+            const emoji = document.createElement('div');
+            emoji.innerText = ['💜', '✨', '⚖️', '🦄', '🌸', '🪄'][Math.floor(Math.random() * 6)];
+            emoji.style.position = 'absolute';
+            emoji.style.left = Math.random() * 100 + 'vw';
+            emoji.style.top = '-50px';
+            emoji.style.fontSize = Math.random() * 20 + 25 + 'px';
+            emoji.style.transition = `top ${Math.random() * 3 + 5}s linear, opacity 1s, transform 5s linear`;
+            emoji.style.opacity = '0.7';
+            emoji.style.zIndex = '1';
+            emoji.style.transform = `rotate(${Math.random() * 360}deg)`;
+
+            container.appendChild(emoji);
+
+            setTimeout(() => {
+                emoji.style.top = '110vh';
+                emoji.style.transform = `rotate(${Math.random() * 720}deg)`;
+            }, 50);
+            setTimeout(() => { emoji.remove(); }, 8000);
+        }, 250);
+
+        // 1.10 Media Preloader Logic (V13)
+        const mediaToPreload = {
+            images: photoData.map(p => p.url),
+            audio: [
+                'bg-music',
+                'sfx-yes', 'sfx-no', 'sfx-wrong', 'sfx-wehe',
+                'sfx-objection', 'sfx-tada', 'sfx-keyboard', 'sfx-quiz'
+            ]
+        };
+
+        let preloadingStatus = {
+            loaded: 0,
+            total: mediaToPreload.images.length + mediaToPreload.audio.length,
+            isComplete: false
+        };
+
+        function initPreloader() {
+            let loadedCount = 0;
+            const totalCount = preloadingStatus.total;
+
+            const checkResolve = (e) => {
+                loadedCount++;
+                preloadingStatus.loaded = loadedCount;
+                if (loadedCount >= totalCount) {
+                    preloadingStatus.isComplete = true;
+                    console.log("All media preloaded successfully.");
+                }
+            };
+
+            // Preload Images
+            mediaToPreload.images.forEach(url => {
+                const img = new Image();
+                img.onload = checkResolve;
+                img.onerror = checkResolve; // Continue anyway
+                img.src = url;
+            });
+
+            // Preload Audio
+            mediaToPreload.audio.forEach(id => {
+                const aud = document.getElementById(id);
+                if (aud) {
+                    // readyState 4 = HAVE_ENOUGH_DATA
+                    if (aud.readyState >= 3) {
+                        checkResolve();
+                    } else {
+                        aud.addEventListener('canplaythrough', checkResolve, { once: true });
+                        aud.addEventListener('error', checkResolve, { once: true });
+                        aud.load();
+                    }
+                } else {
+                    checkResolve();
+                }
+            });
+        }
+
+        // Start preloading immediately
+        initPreloader();
+
+        function unlockExperience() {
+            // V13: Check if preloading is complete
+            if (!preloadingStatus.isComplete) {
+                if (typeof showToast === 'function') {
+                    showToast("Try again, media is loading... ⏳");
+                } else {
+                    alert("Try again, media is loading... ⏳");
+                }
+                return;
+            }
+
+            // Stop splash rain
+            clearInterval(splashRainInterval);
+
+            // Hide splash immediately
+            const splash = document.getElementById('splash-overlay');
+            splash.classList.add('hidden');
+
+            window.scrollTo({ top: 0, behavior: 'instant' });
+
+            // Unlock and Play BGM
+            bgmInitialized = true;
+            bgMusic.src = 'Music/bg.mp3';
+            bgMusic.currentTime = 0;
+            bgMusic.volume = 0;
+            bgMusic.loop = true;
+
+            setTimeout(() => {
+                bgMusic.play().catch(e => console.log("Audio unlock failed:", e));
+                fadeBGM(1, 1500);
+            }, 300);
+
+            // Unlock sections after splash fade
+            setTimeout(() => {
+                const hero = document.getElementById('hero-section');
+                hero.classList.remove('locked');
+                hero.querySelectorAll('.reveal, .reveal-pop, .reveal-fade').forEach(el => {
+                    el.classList.add('active');
+                });
+            }, 800);
+        }
+
+        function fadeBGM(targetVolume, duration = 1000, onComplete = null) {
+            if (!bgmInitialized) return;
+            if (fadeInterval) clearInterval(fadeInterval);
+
+            // If we are fading in and paused, play first
+            if (targetVolume > 0 && bgMusic.paused) {
+                bgMusic.play().catch(e => console.log("Fade-play failed:", e));
+            }
+
+            const startVolume = bgMusic.volume;
+            const diff = targetVolume - startVolume;
+            const steps = 30; // Smooth 30 steps
+            const stepMs = duration / steps;
+            let currentStep = 0;
+
+            fadeInterval = setInterval(() => {
+                currentStep++;
+                bgMusic.volume = Math.max(0, Math.min(1, startVolume + (diff * (currentStep / steps))));
+
+                if (currentStep >= steps) {
+                    bgMusic.volume = targetVolume;
+                    clearInterval(fadeInterval);
+                    if (targetVolume === 0) bgMusic.pause();
+                    if (onComplete) onComplete();
+                }
+            }, stepMs);
+        }
+
+
+        const activeSections = new Set();
+        const bgmObserverCallback = (entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) activeSections.add(entry.target.id);
+                else activeSections.delete(entry.target.id);
+            });
+
+            // Ensure BG Music is playing and at correct volume if visible
+            const isPlayingBG = bgMusic.src && bgMusic.src.includes('bg.mp3');
+            if (!isPlayingBG) {
+                fadeBGM(1);
+            } else if (bgMusic.volume === 0 && activeSections.size > 0) {
+                fadeBGM(1);
+            }
+        };
+
+        const bgmObserver = new IntersectionObserver(bgmObserverCallback, { threshold: 0.2 });
+
+        document.querySelectorAll('#hero-section, #gallery-section, #quiz-section').forEach(el => {
+            bgmObserver.observe(el);
+        });
+
+        // 1.7 Scroll Reveal Observer
+        const revealCallback = (entries, observer) => {
+            entries.forEach(entry => {
+                // If the section is locked (during splash), ignore everything.
+                const section = entry.target.closest('section');
+                if (section && section.classList.contains('locked')) {
+                    return;
+                }
+
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                } else {
+                    // Restore re-trigger on scroll back!
+                    entry.target.classList.remove('active');
+                }
+            });
+        };
+
+        const revealObserver = new IntersectionObserver(revealCallback, {
+            threshold: 0.1, // Lower threshold for better sensitivity
+            rootMargin: '0px 0px -50px 0px'
+        });
+
+        // Observe everything EXCEPT Hero initially? No, we observe all, but unobserve Hero on unlock.
+        document.querySelectorAll('.reveal, .reveal-pop, .reveal-fade').forEach(el => {
+            revealObserver.observe(el);
+        });
+        // Also observe the section itself for the broad unlock
+        revealObserver.observe(document.getElementById('hero-section'));
+
+        // 1.6 Flower Shower (Full Screen)
+        function flowerShower() {
+            const container = document.getElementById('hearts-container');
+            const emojis = ['🪻', '💜', '✨', '🍇', '☂️', '🫧', '🦄', '🧚‍♀️'];
+
+            // Create 300 emojis for full coverage
+            for (let i = 0; i < 300; i++) {
+                const confetti = document.createElement('div');
+                confetti.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+                confetti.style.position = 'fixed';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.top = '-10vh';
+                confetti.style.fontSize = Math.random() * 20 + 10 + 'px';
+                confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+                confetti.style.zIndex = 9999;
+                confetti.style.transition = `top ${Math.random() * 3 + 2}s ease-in, opacity ${Math.random() * 2 + 3}s`;
+
+                container.appendChild(confetti);
+
+                setTimeout(() => {
+                    confetti.style.top = '110vh';
+                    confetti.style.opacity = 0;
+                }, 100);
+
+                setTimeout(() => {
+                    confetti.remove();
+                }, 5000);
+            }
+        }
+
+        // 1.8 REALISTIC Smoke Explosion (Physics Based)
+        function smokeExplosion(x, y) {
+            const container = document.body;
+            const particleCount = 150; // MASSIVE EXPLOSION
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+
+                // Randomize type: Smoke vs Sparkle
+                const isSparkle = Math.random() > 0.7;
+
+                particle.style.position = 'fixed';
+                particle.style.left = x + 'px';
+                particle.style.top = y + 'px';
+                particle.style.borderRadius = '50%';
+                particle.style.pointerEvents = 'none';
+                particle.style.zIndex = 10001;
+
+                if (isSparkle) {
+                    particle.style.width = Math.random() * 8 + 2 + 'px';
+                    particle.style.height = particle.style.width;
+                    particle.style.background = '#FFF'; // Sparkle
+                    particle.style.boxShadow = '0 0 10px #FFF';
+                } else {
+                    // 3D Ball
+                    particle.style.width = Math.random() * 15 + 10 + 'px';
+                    particle.style.height = particle.style.width;
+                    const hue = Math.floor(Math.random() * 60 + 260); // Purple/Violet range
+                    particle.style.background = `radial-gradient(circle at 30% 30%, rgba(255,255,255,0.95), hsla(${hue}, 70%, 60%, 1), hsla(${hue}, 80%, 40%, 1))`;
+                    particle.style.boxShadow = '2px 2px 5px rgba(0,0,0,0.3)';
+                    // No blur for solid 3D look
+                }
+
+                container.appendChild(particle);
+
+                // PHYSICS 2.0: Gravity & Bounce
+                const velocityDefault = Math.random() * 800 + 400; // FAST explosive power
+                const angle = Math.random() * Math.PI * 2;
+                const vx = Math.cos(angle) * (Math.random() * 300); // Horizontal spread
+                const vy = Math.sin(angle) * velocityDefault * -1; // Shoot UP first
+
+                const animation = particle.animate([
+                    { transform: `translate(0, 0)`, opacity: 1 },
+                    { transform: `translate(${vx}px, ${vy * 0.2}px)`, opacity: 1, offset: 0.1 }, // Peak
+                    { transform: `translate(${vx * 1.5}px, ${600 + Math.random() * 200}px)`, opacity: 0 } // Fall down
+                ], {
+                    duration: Math.random() * 1000 + 1000,
+                    easing: 'cubic-bezier(0.25, 1, 0.5, 1)'
+                });
+
+                animation.onfinish = () => particle.remove();
+            }
+
+            // Add a "Shockwave" ring
+            const wave = document.createElement('div');
+            wave.style.position = 'fixed';
+            wave.style.left = x + 'px';
+            wave.style.top = y + 'px';
+            wave.style.width = '0px';
+            wave.style.height = '0px';
+            wave.style.border = '2px solid rgba(255, 255, 255, 0.8)';
+            wave.style.borderRadius = '50%';
+            wave.style.transform = 'translate(-50%, -50%)';
+            wave.style.zIndex = 10000;
+            container.appendChild(wave);
+
+            wave.animate([
+                { width: '0px', height: '0px', opacity: 0.8, borderWidth: '10px' },
+                { width: '500px', height: '500px', opacity: 0, borderWidth: '0px' }
+            ], {
+                duration: 600,
+                easing: 'ease-out'
+            }).onfinish = () => wave.remove();
+        }
+
+
+        // 1.9 Memory Clothesline Gallery (Dual Auto-Scroll)
+        const clotheslineContainer = document.getElementById('clothesline-scroll-container');
+
+        // 12 Gallery Images (Portraits with various ratios)
+        // 12 Gallery Images (Using relative paths for GitHub hosting)
+        // (Defined at top of script for preloading)
+
+        function initClothesline() {
+            // Split data into two rows
+            const row1Data = photoData.slice(0, 6);
+            const row2Data = photoData.slice(6, 12);
+
+            clotheslineContainer.innerHTML = `
+                <!-- Row 1: Left to Right (Start offset -50% -> 0) -->
+                <!-- We need duplicate content for seamless loop -->
+                <!-- Track moves Right: translateX(0) -> translateX(50%) ??? No. -->
+                <!-- Moving Left to Right visually means: translateX(-50%) -> translateX(0) if duplicates are on left. -->
+                
+                <div class="clothesline-row scroll-right">
+                    <div class="clothesline-track">
+                        ${renderTrack(row1Data)}
+                        ${renderTrack(row1Data)} <!-- Duplicate -->
+                        ${renderTrack(row1Data)} <!-- Triplicate for safety on wide screens -->
+                    </div>
+                </div>
+
+                <!-- Row 2: Right to Left -->
+                <div class="clothesline-row scroll-left">
+                     <div class="clothesline-track">
+                        ${renderTrack(row2Data)}
+                        ${renderTrack(row2Data)}
+                        ${renderTrack(row2Data)}
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderTrack(items) {
+            let html = '<div class="track-segment" style="display:flex;">';
+            // Add rope inside segment
+            html += '<div class="track-rope"></div>';
+
+            items.forEach((photo) => {
+                // Drop is constant (0s delay), Sway starts after Drop (2.5s)
+                const swayDuration = 6 + Math.random() * 2;
+                // Slow sway (6-8s) for even movement
+
+                html += `
+                    <div class="hanging-photo" style="animation-delay: 0s, 2.5s; animation-duration: 2.5s, ${swayDuration}s;">
+                        <div class="photo-inner">
+                            <img src="${photo.url}" alt="Memory" loading="lazy">
+                            <p>${photo.caption}</p>
+                        </div>
+                    </div>
+                `;
+            });
+            html += '</div>';
+            return html;
+        }
+
+        // Initialize
+        initClothesline();
+
+        // 2. Quiz Logic (Legal Edition)
+        const quizBox = document.getElementById('quiz-box');
+        let currentStep = 0;
+
+        function nextQuestion(step) {
+            // SFX Logic
+            if (step === 1) {
+                playSound('quiz'); // Quiz Music Overlay
+                // V11.1: Reduce BG Volume by 40% (Target 0.6)
+                fadeBGM(0.6, 1000);
+            }
+            else playSound('yes'); // Normal Yes steps
+
+            // Fade out
+            quizBox.style.opacity = '0';
+
+            // Wait for fade out, then swap content
+            setTimeout(() => {
+                currentStep = step;
+                updateQuizContent(step);
+                // Fade in
+                quizBox.style.opacity = '1';
+            }, 200);
+        }
+
+        function updateQuizContent(step) {
+            // Step 1: Legal Start
+            if (step === 1) {
+                quizBox.innerHTML = `
+                    <h2>Cross-Examination in Progress ⚖️</h2>
+                    <p style="margin-top: 15px; font-size: 1.2rem;">Do you swear you are my favorite person? 🤨</p>
+                    <div style="margin-top: 30px;">
+                        <button class="answer-btn yes" onclick="nextQuestion(2)">Guilty! ✋</button>
+                        <button class="answer-btn no" onclick="showOverruled()">Objection! 👩‍⚖️</button>
+                    </div>
+                `;
+            }
+            // Step 2: Affirmation
+            else if (step === 2) {
+                quizBox.innerHTML = `
+                    <h2>SUSTAINED! 🎉</h2>
+                    <p style="margin-top: 15px;">The court finds you delightfully amazing.</p>
+                    <div style="margin-top: 30px;">
+                        <button class="answer-btn yes" onclick="nextQuestion(3)">Proceed, Your Honor ➡️</button>
+                    </div>
+                `;
+            }
+
+            // Step 3: Lucky
+            else if (step === 3) {
+                quizBox.innerHTML = `
+                    <h2>Are you lucky to have me as your counsel? 📜</h2>
+                    <div style="margin-top: 30px; position: relative; height: 100px;">
+                        <button class="answer-btn yes" onclick="nextQuestion(4)">I plead the 5th (Yes) 😌</button>
+                        <button class="answer-btn no" onmouseover="runAway(this)" onclick="runAway(this)" style="position: absolute;">Objection! 🙄</button>
+                    </div>
+                `;
+            }
+
+            // Step 4: Cute
+            else if (step === 4) {
+                quizBox.innerHTML = `
+                    <h2>Is the defendant (me) the cutest? 🥺</h2>
+                    <div style="margin-top: 30px; position: relative; height: 100px;">
+                        <button class="answer-btn yes" onclick="nextQuestion(5)">Evidence implies YES 😘</button>
+                        <button class="answer-btn no" onmouseover="runAway(this)" onclick="runAway(this)" style="position: absolute;">Overruled! 🤢</button>
+                    </div>
+                `;
+            }
+
+            // Step 5: Forever
+            else if (step === 5) {
+                quizBox.innerHTML = `
+                    <h2>Are we serving a life sentence together? 👯‍♀️</h2>
+                    <div style="margin-top: 30px; position: relative; height: 100px;">
+                        <button class="answer-btn yes" onclick="nextQuestion(6)">No Parole! 🔒</button>
+                        <button class="answer-btn no" onmouseover="runAway(this)" onclick="runAway(this)" style="position: absolute;">Appealing... 🏃‍♀️</button>
+                    </div>
+                `;
+            }
+
+            // Step 6: Miss Me
+            else if (step === 6) {
+                quizBox.innerHTML = `
+                    <h2>Do you miss your lawyer right now? ☹️</h2>
+                    <div style="margin-top: 30px; position: relative; height: 100px;">
+                        <button class="answer-btn yes" onclick="nextQuestion(7)">Guilty as charged 🥺</button>
+                        <button class="answer-btn no" onmouseover="runAway(this)" onclick="runAway(this)" style="position: absolute;">Silence! 😒</button>
+                    </div>
+                `;
+            }
+
+            // Step 7: The Contract Setup
+            else if (step === 7) {
+                quizBox.innerHTML = `
+                    <h2>Final Verdict? ❤️</h2>
+                    
+                    <div style="margin-top: 30px; position: relative; height: 100px;">
+                        <button class="answer-btn yes" onclick="showContract()">Besties 4ever! ⚖️</button>
+                        <button class="answer-btn no" id="no-btn" onmouseover="runAway(this)" onclick="runAway(this)" style="position: absolute;">Mistrial! 🙄</button>
+                    </div>
+                `;
+            }
+        }
+
+        // Show "Objection Overruled" logic
+        function showOverruled() {
+            playSound('wrong'); // Objection!
+            // Fade out
+            quizBox.style.opacity = '0';
+
+            setTimeout(() => {
+                quizBox.innerHTML = `
+                    <div style="text-align: center;">
+                        <div class="stamp">Overruled!</div>
+                        <h2 style="font-family: 'Times New Roman', serif; margin-top: 10px;">COURT ORDER 🏛️</h2>
+                        <p style="font-size: 1.1rem; margin: 15px 0 line-height: 1.5;">
+                            The Court finds the Respondent <br>
+                            <strong>too cute</strong> to be allowed to complain. 😤
+                        </p>
+                        <p style="font-size: 1.2rem; color: #d32f2f; font-weight: bold; margin-bottom: 25px;">
+                            Proceed with the hugs! ❤️
+                        </p>
+                        <button class="answer-btn yes" onclick="nextQuestion(1)">Understood 🥺</button>
+                    </div>
+                `;
+                // Fade in
+                quizBox.style.opacity = '1';
+            }, 200);
+        }
+
+        // Run Away Function for "No" Button
+        function runAway(btn) {
+            playSound('no');
+            btn.style.position = 'absolute';
+
+            // Get container dimensions
+            const container = quizBox.getBoundingClientRect();
+            const btnRect = btn.getBoundingClientRect();
+
+            // Calculate available space relative to the container
+            const maxX = quizBox.offsetWidth - btn.offsetWidth - 20;
+            const maxY = quizBox.offsetHeight - btn.offsetHeight - 20;
+
+            let randomX, randomY;
+
+            // Ensure the button moves to a new position that is substantially different
+            // and tries to avoid the immediate area
+            let attempts = 0;
+            const currentX = parseFloat(btn.style.left || 0);
+            const currentY = parseFloat(btn.style.top || 0);
+
+            do {
+                randomX = Math.random() * maxX;
+                randomY = Math.random() * maxY;
+                attempts++;
+            } while (
+                // Keep trying if distance is too close (under 150px)
+                (Math.abs(randomX - currentX) < 150 || Math.abs(randomY - currentY) < 150) &&
+                attempts < 10 // Safety break to prevent infinite loops on small screens
+            );
+
+            // Apply different effects based on the current step
+
+            // Step 4 (Cute): Spin + Jump
+            if (currentStep === 4) {
+                const rotation = Math.random() * 360;
+                btn.style.transform = `rotate(${rotation}deg)`;
+            }
+
+            // Step 5 (Forever): Shrink + Jump
+            else if (currentStep === 5) {
+                // Ensure we get the current scale, defaulting to 1
+                let currentScale = 1;
+                // Check if there is an existing transform with scale
+                const transform = btn.style.transform;
+                if (transform && transform.includes('scale')) {
+                    const match = transform.match(/scale\(([^)]+)\)/);
+                    if (match) currentScale = parseFloat(match[1]);
+                }
+
+                // Reduce scale
+                const newScale = Math.max(0.2, currentScale - 0.15);
+                btn.style.transform = `scale(${newScale})`;
+            }
+
+            // Step 6 (Miss Me): Teleport (Instant movement)
+            else if (currentStep === 6) {
+                // We force a style flush by setting transition to none, then applying position
+                // The key is to NOT animate the 'left' and 'top' properties
+                btn.style.transition = 'none';
+            }
+
+            // Step 7/8 (Trap): Fast & Crazy
+            else if (currentStep >= 7) {
+                btn.style.transition = 'all 0.1s ease'; // Super fast
+                btn.style.transform = `scale(${1 + Math.random() * 0.2}) rotate(${Math.random() * 20 - 10}deg)`; // Jitter
+            } else {
+                // Default Smooth Movement (Restored)
+                btn.style.transform = 'none';
+                btn.style.transition = 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+            }
+
+            btn.style.left = randomX + 'px';
+            btn.style.top = randomY + 'px';
+
+            // Change text for fun
+            const taunts = [
+                "Can't catch me! 😝",
+                "Try again! 😂",
+                "Nope! 🙅‍♀️",
+                "Too slow! 🐌",
+                "Just click YES! ❤️",
+                "Not this one! ☝️",
+                "Missed me! 👻",
+                "Nice try! 😉"
+            ];
+            btn.innerText = taunts[Math.floor(Math.random() * taunts.length)];
+        }
+
+        // --- 3. The Love Contract Logic ---
+        function showContract() {
+            playSound('yes'); // "I Love You" click
+            quizBox.innerHTML = `
+                <div class="contract-paper" style="border: 2px solid #555; padding: 20px; background: #fffdf0; position: relative;">
+                    <div style="border: 1px dashed #333; padding: 15px;">
+                        <h2 style="font-family: 'Times New Roman', serif; color: #333; margin-bottom: 0;">HIGH COURT OF BESTIES</h2>
+                        <p style="font-size: 0.9rem; color: #555;">CASE NO. 143 | JUDGE: CUPID</p>
+                        
+                        <hr style="margin: 15px 0;">
+                        
+                        <p style="text-align: left; font-size: 1rem; margin-bottom: 10px;">
+                            <strong>BETWEEN:</strong><br>
+                            Plaintiff: Me<br>
+                            Defendant: You (The Cutest)
+                        </p>
+                        
+                        <p style="text-align: left; font-size: 1rem; margin-bottom: 10px;">
+                            <strong>VERDICT:</strong><br>
+                            The defendant is found <span style="color: #d32f2f; font-weight: bold;">GUILTY</span> of stealing the Plaintiff's heart in the first degree.
+                        </p>
+                        
+                        <p style="text-align: left; font-size: 1rem; margin-bottom: 20px;">
+                            <strong>SENTENCE:</strong><br>
+                            Mandatory lifetime of constant support, unyielding loyalty, and being loved unconditionally is hereby declared strictly admissible in the Court.
+                        </p>
+                        
+                <div id="signature-area" style="margin-top: 20px;">
+                    <!-- T&C Section -->
+                    <div style="margin-bottom: 15px; font-size: 0.9rem; text-align: center;">
+                        <input type="checkbox" id="tc-checkbox" style="vertical-align: middle;" onclick="playSound('no'); showToast('Read the terms first! 📜'); return false;">
+                        <label for="tc-checkbox" style="font-family: 'Times New Roman', serif; color: #555;">
+                            I agree to the <a href="javascript:void(0)" onclick="openTerms()" style="color: #d32f2f; text-decoration: underline;">Terms & Conditions</a>
+                        </label>
+                    </div>
+
+                    <button class="answer-btn yes" onclick="signContract()" style="font-family: 'Times New Roman', serif; background: #d32f2f; color: white;">I ACCEPT THE CHARGES ✍️</button>
+                    <p id="tc-error" style="color: red; font-size: 0.8rem; display: none; margin-top: 5px;">* You must read and agree to the Terms!</p>
+                </div>
+            `;
+        }
+
+        // --- Terms & Conditions Logic ---
+        function openTerms() {
+            // Create Overlay
+            const overlay = document.createElement('div');
+            overlay.id = 'tc-overlay';
+            overlay.style.cssText = `
+                position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+                background: rgba(0,0,0,0.6); z-index: 20000;
+                display: flex; justify-content: center; align-items: center;
+                backdrop-filter: blur(5px);
+            `;
+
+            overlay.innerHTML = `
+                <div style="background: white; width: 90%; max-width: 500px; max-height: 80vh; border-radius: 10px; padding: 25px; overflow-y: auto; text-align: left; position: relative;">
+                    <h2 style="font-family: 'Times New Roman', serif; text-align: center; color: #333; margin-bottom: 20px;">LEGAL TERMS & CONDITIONS 📜</h2>
+                    
+                    <div style="font-family: 'Times New Roman', serif; font-size: 1rem; color: #222; line-height: 1.6; text-align: justify;">
+                        <p><strong>1. Specific Performance:</strong> The Respondent (Nanduu) is hereby ordered to maintain a minimum daily quota of smiles, as the Petitioner (Me) relies heavily on them for survival.</p>
+                        <hr style="opacity: 0.3; margin: 10px 0;">
+                        <p><strong>2. Inter Alia:</strong> The Court finds, inter alia, that Nanduu is the most adorable person in existence, and any evidence to the contrary is hereby dismissed as inadmissible.</p>
+                         <hr style="opacity: 0.3; margin: 10px 0;">
+                        <p><strong>3. Permanent Injunction:</strong> A permanent injunction is issued against Nanduu from ever feeling unloved. The Petitioner is authorized to use "Emergency Noodles" to enforce this order.</p>
+                         <hr style="opacity: 0.3; margin: 10px 0;">
+                        <p><strong>4. Statute of Limitations:</strong> There shall be no Statute of Limitations on this partnership. The right to care for, support, and annoy each other and send memes at 3:00 AM is granted in perpetuity.</p>
+                         <hr style="opacity: 0.3; margin: 10px 0;">
+                        <p><strong>5. Force Majeure:</strong> No act of God, exams, or busy law school schedules shall be deemed sufficient to terminate the emotional contract between the parties.</p>
+                         <hr style="opacity: 0.3; margin: 10px 0;">
+                        <p><strong>6. Habeas Corpus:</strong> The court orders the "production of the body"—meaning, whenever the Petitioner goes too long without seeing the Respondent, a mandatory "Catch-up Meeting" (featuring Mandi or Aishcreem) is required by law.</p>
+                         <hr style="opacity: 0.3; margin: 10px 0;">
+                        <p><strong>7. Golden Rule:</strong> Whenever Nanduu says "I'm fine," this Court shall ignore the literal meaning and interpret it as: "I need a snack, listen to my rants, and a nap immediately."</p>
+                         <hr style="opacity: 0.3; margin: 10px 0;">
+                        <p><strong>8. Caveat Emptor:</strong> "Buyer Beware." The Respondent was warned that the Petitioner is extremely clingy and comes with a lifetime supply of cheesy jokes. This includes 24/7 all-round support, bad puns, and loyalty that is frankly a bit much. No refunds.</p>
+                         <hr style="opacity: 0.3; margin: 10px 0;">
+                        <p><strong>9. Res Ipsa Loquitur:</strong> "The thing speaks for itself." It is obvious to any observer that we are the perfect duo, so no further arguments are needed.</p>
+                         <hr style="opacity: 0.3; margin: 10px 0;">
+                        <p><strong>10. Judgment Debt:</strong> The Respondent is found liable for one million Longg Huuugs, to be paid to the Petitioner in daily installments over the next 100 years.</p>
+                    </div>
+
+                    <div style="margin-top: 25px; text-align: center;">
+                        <button class="answer-btn yes" onclick="agreeTerms()" style="width: 100%;">Agreed & Understood 🤝</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(overlay);
+        }
+
+        function agreeTerms() {
+            playSound('wehe'); // "Agreed & Understood"
+            // Close modal
+            const overlay = document.getElementById('tc-overlay');
+            if (overlay) overlay.remove();
+
+            // Check the box
+            const checkbox = document.getElementById('tc-checkbox');
+            if (checkbox) checkbox.checked = true;
+
+            // Hide error if present
+            const error = document.getElementById('tc-error');
+            if (error) error.style.display = 'none';
+        }
+
+        function signContract() {
+            // Validation Logic
+            const checkbox = document.getElementById('tc-checkbox');
+            const error = document.getElementById('tc-error');
+
+            if (!checkbox.checked) {
+                playSound('no');
+                error.style.display = 'block';
+                // Shake animation for fun
+                const btn = document.querySelector('#signature-area .answer-btn');
+                btn.style.animation = 'wiggle 0.3s ease';
+                setTimeout(() => btn.style.animation = 'none', 300);
+                return;
+            }
+
+            const sigArea = document.getElementById('signature-area');
+            playSound('objection'); // Success SFX
+
+            // Smoother "Sealing" Animation
+            sigArea.innerHTML = `
+                <div style="
+                    color: #d32f2f; 
+                    font-size: 2rem; 
+                    font-weight: bold; 
+                    border: 3px solid #d32f2f; 
+                    display: inline-block; 
+                    padding: 10px; 
+                    font-family: 'Courier New', monospace;
+                    animation: sealSlam 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+                    opacity: 0; /* Start hidden for animation */
+                ">
+                    CONTRACT SIGNED
+                </div>
+            `;
+
+            // Trigger Envelope Reveal with smooth fade
+            setTimeout(() => {
+                sigArea.closest('.contract-paper').style.transition = "opacity 0.5s ease";
+                sigArea.closest('.contract-paper').style.opacity = "0";
+                setTimeout(showEnvelope, 500);
+            }, 1000);
+        }
+
+        // --- 4. The Lavender Envelope (CUTE Version) ---
+        function showEnvelope() {
+            quizBox.innerHTML = `
+                <div id="envelope-container" onclick="openEnvelope(event)">
+                    <h2 style="color: #7E57C2; margin-bottom: 30px; font-family: 'Dancing Script';">A special delivery... 💜</h2>
+                    
+                    <div class="envelope-wrapper">
+                         <div class="envelope-flap"></div>
+                         <div class="envelope-seal">💜</div>
+                         
+                         <!-- Decorative Stickers -->
+                         <div class="sticker" style="bottom: 10px; left: 10px; transform: rotate(-15deg);">🌸</div>
+                         <div class="sticker" style="top: 20px; right: 10px; transform: rotate(10deg);">✨</div>
+                         
+                         <p style="position: absolute; bottom: -25px; left: 50%; transform: translateX(-50%); width: max-content; text-align: center; color: #4a148c; font-family: 'Courier New', monospace; font-weight: bold; font-size: 0.7rem; z-index: 4; opacity: 1; padding: 0 10px; letter-spacing: 0.5px; white-space: nowrap;">TO: Adv. Nandana Sunil BBA. LLB.</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        function openEnvelope(event) {
+            // Get envelope center for explosion and ball start interactions
+            let startX = window.innerWidth / 2;
+            let startY = window.innerHeight / 2;
+
+            // Try to find the envelope element for precise positioning
+            const envContainer = document.getElementById('envelope-container');
+            if (envContainer) {
+                const rect = envContainer.getBoundingClientRect();
+                startX = rect.left + rect.width / 2;
+                startY = rect.top + rect.height / 2;
+            } else if (event) {
+                startX = event.clientX;
+                startY = event.clientY;
+            }
+
+            // 0. Smoke Explosion (At the envelope)
+            playSound('tada');
+            smokeExplosion(startX, startY);
+
+            // 1. Hide the Quiz/Envelope Wrapper immediately
+            const quizWrapper = document.getElementById('quiz-wrapper-main');
+            if (quizWrapper) {
+                quizWrapper.style.transition = 'opacity 0.2s';
+                quizWrapper.style.opacity = '0';
+                setTimeout(() => quizWrapper.style.display = 'none', 200);
+            }
+
+            // 2. Play Sound/Confetti
+            flowerShower();
+
+            // 3. Drop the Paper Ball
+            dropPaperBall(startX, startY);
+        }
+
+        function dropPaperBall(x, y) {
+            const ball = document.createElement('div');
+            ball.className = 'paper-ball';
+            ball.style.left = x + 'px';
+            ball.style.top = y + 'px';
+            document.body.appendChild(ball);
+
+            // Calculate goal position (center of screen effectively, or where the letter will be)
+            // Since letter reveals "in place", let's drop it slightly down from the envelope position
+            const dropDistance = 200;
+
+            const animation = ball.animate([
+                { transform: 'translate(-50%, -50%) rotate(0deg)', top: y + 'px' },
+                { transform: 'translate(-50%, -50%) rotate(180deg)', top: (y - 50) + 'px', offset: 0.3 }, // Jump up slightly
+                { transform: 'translate(-50%, -50%) rotate(720deg)', top: (y + dropDistance) + 'px' } // Fall down
+            ], {
+                duration: 600,
+                easing: 'cubic-bezier(0.6, -0.28, 0.735, 0.045)' // Bounce/Fall like ease
+            });
+
+            animation.onfinish = () => {
+                ball.remove();
+                revealLetter();
+            };
+        }
+
+
+        function typeWriterHTML(element, html, speed) {
+            return new Promise(resolve => {
+                let i = 0;
+                element.innerHTML = '';
+                function type() {
+                    if (i < html.length) {
+                        // Check for HTML tag
+                        if (html.charAt(i) === '<') {
+                            let tag = '';
+                            while (html.charAt(i) !== '>' && i < html.length) {
+                                tag += html.charAt(i);
+                                i++;
+                            }
+                            tag += '>'; // Close the tag
+                            i++;
+                            element.innerHTML += tag;
+                            type(); // Skip delay for tags
+                        } else {
+                            element.innerHTML += html.charAt(i);
+                            i++;
+                            setTimeout(type, speed);
+                        }
+                    } else {
+                        resolve();
+                    }
+                }
+                type();
+            });
+        }
+
+        async function revealLetter() {
+            const letterWrapper = document.getElementById('letter-wrapper-main');
+            if (letterWrapper) {
+                // 1. Show wrapper to calculate layout (start invisible)
+                letterWrapper.style.opacity = '0';
+                letterWrapper.style.display = 'block';
+                letterWrapper.style.animation = 'none';
+
+                // 2. Measure Height of content
+                const contentDiv = letterWrapper.querySelector('.letter-content');
+                const elements = contentDiv.querySelectorAll('h2, p');
+
+                // Ensure text is present for measurement
+                elements.forEach(el => {
+                    if (el.dataset.originalText) el.innerHTML = el.dataset.originalText;
+                });
+
+                const fullHeight = contentDiv.offsetHeight;
+
+                // 3. Freeze dimensions so it doesn't resize during typing
+                contentDiv.style.minHeight = fullHeight + 'px';
+
+                // 4. Save text and clear for animation
+                elements.forEach(el => {
+                    if (!el.dataset.originalText) {
+                        el.dataset.originalText = el.innerHTML;
+                    }
+                    el.innerHTML = ''; // Clear text
+                });
+
+                // Reset opacity for animation
+                letterWrapper.style.opacity = '';
+
+                // 5. Restart Animation
+                letterWrapper.offsetHeight; /* trigger reflow */
+                letterWrapper.style.animation = 'unfoldLetter 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards';
+
+
+
+                // Start Typing Sequence after paper unfolds
+                setTimeout(async () => {
+                    // Start Typing Sound (Boosted for V12)
+                    const kbd = document.getElementById('sfx-keyboard');
+                    if (kbd) {
+                        kbd.currentTime = 0;
+                        kbd.volume = 0.8;
+                        kbd.loop = true;
+                        kbd.play().catch(e => { });
+                    }
+
+                    // V12 Focus Mode: Duck BG Music deeply for letter reading
+                    fadeBGM(0.3, 800);
+
+                    for (let el of elements) {
+                        const originalText = el.dataset.originalText;
+                        await typeWriterHTML(el, originalText, 25);
+                        await new Promise(r => setTimeout(r, 300));
+                    }
+
+                    // Stop Typing Sound
+                    if (kbd) { kbd.pause(); kbd.currentTime = 0; }
+
+                    // V12: Restore BG Music to full volume after letter is done
+                    fadeBGM(1.0, 1500);
+
+                    // Final Celebration when letter is done! 🌸✨
+                    setTimeout(() => {
+                        flowerShower(); // Sprinkle flowers again
+                        showToast("Love officially delivered! 💜✨");
+                        // Launch some extra hearts
+                        for (let i = 0; i < 15; i++) setTimeout(createHeart, i * 100);
+                    }, 500);
+                }, 900);
+            }
+        }
+
+
+        // Helper animation for "down arrow"
+        const styleSheet = document.createElement("style");
+        styleSheet.innerText = `
+            @keyframes bounce {
+                0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+                40% {transform: translateY(-10px);}
+                60% {transform: translateY(-5px);}
+            }
+        `;
+        document.head.appendChild(styleSheet);
+
+        // 4. Random Running Teddy
+        const bear = document.querySelector('.bear-wrapper');
+
+        function randomizeBear() {
+            // Random Duration: 3s (Sprint) to 8s (Jog)
+            const randomDuration = Math.random() * 5 + 3;
+            bear.style.animationDuration = randomDuration + 's';
+
+            // Random Track (Vertical Position): 0px to 100px from bottom (avoid covering buttons too much)
+            const randomBottom = Math.random() * 100;
+            bear.style.bottom = randomBottom + 'px';
+
+            // Random Size: slightly smaller or larger? Maybe keep consistent for now.
+        }
+
+        // 4. Kawaii Toast Logic
+        function showToast(message, soundType = null) {
+            // No sound for toast as per user request
+            // Check if toast exists
+            let toast = document.getElementById('kawaii-toast');
+            if (!toast) {
+                toast = document.createElement('div');
+                toast.id = 'kawaii-toast';
+                toast.className = 'kawaii-toast';
+                document.body.appendChild(toast);
+            }
+
+            // Add icon if needed, or just text
+            toast.innerHTML = '<span>💭</span> ' + message;
+
+            // Trigger reflow to ensure animation plays if it was just added
+            void toast.offsetWidth;
+
+            toast.classList.add('show');
+
+            // Clear previous timeout if any (to prevent early dismissal from rapid clicks)
+            if (toast.timeoutId) clearTimeout(toast.timeoutId);
+
+            toast.timeoutId = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+    </script>
+</body>
+
+</html>
