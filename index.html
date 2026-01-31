@@ -1472,680 +1472,747 @@
             pointer-events: none;
             font-family: 'Poppins', sans-serif;
         }
+
+        /* Device Restriction Styles */
+        #mobile-warning {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(120deg, var(--lavender-light) 0%, #F3E5F5 100%);
+            z-index: 999999;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 30px;
+        }
+
+        #mobile-warning h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.5rem;
+            color: #7E57C2;
+            margin-bottom: 20px;
+        }
+
+        #mobile-warning p {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.1rem;
+            color: #555;
+            max-width: 80%;
+            margin: 0 auto;
+        }
+
+        /* Show warning on screens smaller than 1024px */
+        @media screen and (max-width: 1024px) {
+            #mobile-warning {
+                display: flex;
+            }
+
+            #desktop-content {
+                display: none !important;
+            }
+
+            /* Hide other fixed elements that might bleed through */
+            #hearts-container,
+            .bokeh,
+            .splash-overlay {
+                display: none !important;
+            }
+
+            body {
+                overflow: hidden;
+            }
+        }
     </style>
 </head>
 
 <body>
-    <!-- Splash Screen -->
-    <div id="splash-overlay" class="splash-overlay">
-        <div id="splash-hearts"></div>
-        <div class="ghost-emoji" style="top: 10%; left: 10%;">⚖️</div>
-        <div class="ghost-emoji" style="bottom: 10%; right: 10%;">💜</div>
-        <div class="splash-content">
-            <h1 class="splash-title">Nandana Sunil,<br>Permission to Proceed? ⚖️ 💜</h1>
-            <button class="splash-enter-btn" onclick="unlockExperience()">PROCEED ✨</button>
-            <p class="splash-audio-note"
-                style="color: #6a1b9a; font-family: 'Poppins', sans-serif; font-size: 0.85rem; margin-top: 15px; font-weight: 500; letter-spacing: 0.5px; opacity: 0.7; animation: pulse 2s infinite; pointer-events: none;">
-                Headphones on & Volume up!
-            </p>
-        </div>
+    <!-- Mobile Warning -->
+    <div id="mobile-warning">
+        <h1>For the Best Experience... ✨</h1>
+        <p>This special page is designed for a larger screen.<br>Please open it on your Laptop or Desktop to continue!
+            💻💜</p>
     </div>
 
-    <!-- Background Music -->
-    <audio id="bg-music" loop preload="auto">
-        <source src="Music/bg.mp3" type="audio/mpeg">
-    </audio>
-    <audio id="quiz-music" preload="auto">
-        <source src="Music/quiz.mp3" type="audio/mpeg">
-    </audio>
-
-    <!-- SFX Layer -->
-    <audio id="sfx-yes" preload="auto">
-        <source src="Music/yes.mp3" type="audio/mpeg">
-    </audio>
-    <audio id="sfx-no" preload="auto">
-        <source src="Music/no.mp3" type="audio/mpeg">
-    </audio>
-    <audio id="sfx-wrong" preload="auto">
-        <source src="Music/wrong.mp3" type="audio/mpeg">
-    </audio>
-    <audio id="sfx-wehe" preload="auto">
-        <source src="Music/wehe.mp3" type="audio/mpeg">
-    </audio>
-    <audio id="sfx-objection" preload="auto">
-        <source src="Music/objection.mp3" type="audio/mpeg">
-    </audio>
-    <audio id="sfx-tada" preload="auto">
-        <source src="Music/tada.mp3" type="audio/mpeg">
-    </audio>
-    <audio id="sfx-keyboard" preload="auto">
-        <source src="Music/keyboard.mp3" type="audio/mpeg">
-    </audio>
-
-    <!-- Bokeh Background -->
-    <div class="bokeh"></div>
-    <div class="bokeh"></div>
-    <div class="bokeh"></div>
-
-    <div id="hearts-container"></div>
-
-    <!-- SVG Filter for Torn Edges -->
-    <svg style="position: absolute; width: 0; height: 0;" aria-hidden="true" focusable="false">
-        <defs>
-            <filter id="torn-paper" x="-20%" y="-20%" width="140%" height="140%">
-                <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="5" result="noise" />
-                <feDisplacementMap in="SourceGraphic" in2="noise" scale="20" xChannelSelector="R"
-                    yChannelSelector="G" />
-            </filter>
-        </defs>
-    </svg>
-
-    <!-- HERO -->
-    <section id="hero-section" class="hero locked">
-        <h1 class="reveal hero-title" style="transition-delay: 0.2s;">Hey Nandu..! ✨</h1>
-
-        <!-- Kawaii Scrapbook Box -->
-        <div class="kawaii-box reveal" style="transition-delay: 0.5s; padding: clamp(20px, 4vh, 40px);">
-            <div class="tape-corner-tl"></div>
-            <div class="tape-corner-br"></div>
-
-            <img src="https://media.tenor.com/N6s_shn4w3gAAAAi/cute-bear.gif" class="peeking-bear" alt="Peeking Bear">
-
-            <p class="kawaii-text">You know what... it's been</p>
-            <h3 id="time-count" class="time-count">Calculating...</h3>
-            <p class="kawaii-text">counting moments with you..</p>
-        </div>
-
-        <p class="reveal"
-            style="transition-delay: 0.8s; font-size: clamp(1rem, 2.5vh, 1.3rem); color: #4a235a; margin-top: clamp(30px, 6vh, 60px); font-family: 'Poppins', sans-serif; text-shadow: none; font-weight: 600;">
-            A little something for my Tutuu, check it out... 💌
-        </p>
-
-        <!-- CSS Animated Scroll Indicator -->
-        <div class="reveal" style="margin-top: clamp(15px, 3vh, 30px); transition-delay: 1.2s; text-align: center;">
-            <div class="scroll-heart">
-                <div class="chevron"></div>
-                <div class="chevron"></div>
-                <div class="chevron"></div>
-            </div>
-            <p style="font-size: 0.85rem; color: #555; margin-top: 8px; font-family: 'Indie Flower', cursive;">Scroll
-                for Love</p>
-        </div>
-    </section>
-
-
-    <section id="gallery-section" class="section"
-        style="padding: clamp(10px, 2vh, 30px) 20px; min-height: 100vh; display: flex; flex-direction: column; justify-content: center;">
-        <h2 class="reveal-pop"
-            style="font-family: 'Dancing Script', cursive; font-size: clamp(2rem, 5vh, 2.5rem); color: #705d75; margin-bottom: 5px;">
-            Exhibit A: Evidence of Us ✨
-        </h2>
-
-        <div id="clothesline-scroll-container" class="reveal-fade reveal-delay-2">
-            <!-- Rows injected via JS -->
-        </div>
-
-        <p style="text-align: center; color: #888; font-size: 0.85rem; margin-top: 5px; margin-bottom: 5px;"
-            class="reveal-pop">
-            (Hover to pause the memories 🧺)
-        </p>
-
-        <!-- Scroll Down Surprise -->
-        <div class="reveal-pop reveal-delay-3" style="display: flex; justify-content: center; margin-bottom: 5px;">
-            <!-- No background pill, just the content -->
-            <div class="scroll-down-container"
-                onclick="document.getElementById('quiz-section').scrollIntoView({behavior: 'smooth'})"
-                style="padding: 5px;">
-
-                <div class="scroll-chevron"></div>
-                <div class="scroll-chevron"></div>
-                <div class="scroll-chevron"></div>
-
-                <p class="scroll-text" style="font-size: 1.2rem; margin-top: 5px;">Scroll for Love</p>
+    <!-- Desktop Content Wrapper -->
+    <div id="desktop-content">
+        <!-- Splash Screen -->
+        <div id="splash-overlay" class="splash-overlay">
+            <div id="splash-hearts"></div>
+            <div class="ghost-emoji" style="top: 10%; left: 10%;">⚖️</div>
+            <div class="ghost-emoji" style="bottom: 10%; right: 10%;">💜</div>
+            <div class="splash-content">
+                <h1 class="splash-title">Nandana Sunil,<br>Permission to Proceed? ⚖️ 💜</h1>
+                <button class="splash-enter-btn" onclick="unlockExperience()">PROCEED ✨</button>
+                <p class="splash-audio-note"
+                    style="color: #6a1b9a; font-family: 'Poppins', sans-serif; font-size: 0.85rem; margin-top: 15px; font-weight: 500; letter-spacing: 0.5px; opacity: 0.7; animation: pulse 2s infinite; pointer-events: none;">
+                    Headphones on & Volume up!
+                </p>
             </div>
         </div>
-    </section>
 
-    <!-- CSS Overrides for Compact View -->
-    <style>
-        #clothesline-scroll-container {
-            height: min(650px, 70vh);
-            /* Increased height slightly for bigger images */
-            margin: 10px 0;
-            overflow: visible;
-            /* Keep visible to allow sway overlap without clipping */
-        }
+        <!-- Background Music -->
+        <audio id="bg-music" loop preload="auto">
+            <source src="Music/bg.mp3" type="audio/mpeg">
+        </audio>
+        <audio id="quiz-music" preload="auto">
+            <source src="Music/quiz.mp3" type="audio/mpeg">
+        </audio>
 
-        .clothesline-row {
-            height: 50%;
-            /* Strictly half the container */
-            margin-bottom: 0;
-        }
+        <!-- SFX Layer -->
+        <audio id="sfx-yes" preload="auto">
+            <source src="Music/yes.mp3" type="audio/mpeg">
+        </audio>
+        <audio id="sfx-no" preload="auto">
+            <source src="Music/no.mp3" type="audio/mpeg">
+        </audio>
+        <audio id="sfx-wrong" preload="auto">
+            <source src="Music/wrong.mp3" type="audio/mpeg">
+        </audio>
+        <audio id="sfx-wehe" preload="auto">
+            <source src="Music/wehe.mp3" type="audio/mpeg">
+        </audio>
+        <audio id="sfx-objection" preload="auto">
+            <source src="Music/objection.mp3" type="audio/mpeg">
+        </audio>
+        <audio id="sfx-tada" preload="auto">
+            <source src="Music/tada.mp3" type="audio/mpeg">
+        </audio>
+        <audio id="sfx-keyboard" preload="auto">
+            <source src="Music/keyboard.mp3" type="audio/mpeg">
+        </audio>
 
-        .photo-inner {
-            width: 180px;
-            /* Increased from 150px */
-            padding: 10px 10px 40px 10px;
-            /* Slightly larger padding */
-        }
+        <!-- Bokeh Background -->
+        <div class="bokeh"></div>
+        <div class="bokeh"></div>
+        <div class="bokeh"></div>
 
-        .photo-inner img {
-            height: 200px;
-            /* Increased from 160px */
-        }
+        <div id="hearts-container"></div>
 
-        .hanging-photo {
-            margin: 0 25px;
-            /* Significantly increased gap (was 15px) */
-        }
+        <!-- SVG Filter for Torn Edges -->
+        <svg style="position: absolute; width: 0; height: 0;" aria-hidden="true" focusable="false">
+            <defs>
+                <filter id="torn-paper" x="-20%" y="-20%" width="140%" height="140%">
+                    <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="5" result="noise" />
+                    <feDisplacementMap in="SourceGraphic" in2="noise" scale="20" xChannelSelector="R"
+                        yChannelSelector="G" />
+                </filter>
+            </defs>
+        </svg>
 
-        .track-rope {
-            top: 30px;
-            /* Adjusted lower for bigger scale */
-        }
-    </style>
-    </section>
+        <!-- HERO -->
+        <section id="hero-section" class="hero locked">
+            <h1 class="reveal hero-title" style="transition-delay: 0.2s;">Hey Nandu..! ✨</h1>
 
-    <!-- QUIZ -->
-    <section id="quiz-section" class="section" style="position: relative;">
-        <!-- Floating Atmosphere -->
-        <div class="cloud" style="top: 20%; left: 10%; font-size: 4rem;">☁️</div>
-        <div class="cloud" style="top: 15%; right: 15%; font-size: 3rem; animation-delay: 2s;">☁️</div>
-        <div class="cloud" style="bottom: 30%; left: 20%; font-size: 2.5rem; animation-delay: 5s;">⭐</div>
-        <div class="cloud" style="top: 40%; right: 5%; font-size: 2rem; animation-delay: 3s;">✨</div>
+            <!-- Kawaii Scrapbook Box -->
+            <div class="kawaii-box reveal" style="transition-delay: 0.5s; padding: clamp(20px, 4vh, 40px);">
+                <div class="tape-corner-tl"></div>
+                <div class="tape-corner-br"></div>
 
-        <div class="quiz-wrapper reveal" id="quiz-wrapper-main">
-            <div class="quiz-enhanced">
-                <div id="quiz-box">
-                    <h2>Ready for a question? 💭</h2>
-                    <button class="answer-btn" onclick="nextQuestion(1)">Yes, ask me!</button>
+                <img src="https://media.tenor.com/N6s_shn4w3gAAAAi/cute-bear.gif" class="peeking-bear"
+                    alt="Peeking Bear">
+
+                <p class="kawaii-text">You know what... it's been</p>
+                <h3 id="time-count" class="time-count">Calculating...</h3>
+                <p class="kawaii-text">counting moments with you..</p>
+            </div>
+
+            <p class="reveal"
+                style="transition-delay: 0.8s; font-size: clamp(1rem, 2.5vh, 1.3rem); color: #4a235a; margin-top: clamp(30px, 6vh, 60px); font-family: 'Poppins', sans-serif; text-shadow: none; font-weight: 600;">
+                A little something for my Tutuu, check it out... 💌
+            </p>
+
+            <!-- CSS Animated Scroll Indicator -->
+            <div class="reveal" style="margin-top: clamp(15px, 3vh, 30px); transition-delay: 1.2s; text-align: center;">
+                <div class="scroll-heart">
+                    <div class="chevron"></div>
+                    <div class="chevron"></div>
+                    <div class="chevron"></div>
+                </div>
+                <p style="font-size: 0.85rem; color: #555; margin-top: 8px; font-family: 'Indie Flower', cursive;">
+                    Scroll
+                    for Love</p>
+            </div>
+        </section>
+
+
+        <section id="gallery-section" class="section"
+            style="padding: clamp(10px, 2vh, 30px) 20px; min-height: 100vh; display: flex; flex-direction: column; justify-content: center;">
+            <h2 class="reveal-pop"
+                style="font-family: 'Dancing Script', cursive; font-size: clamp(2rem, 5vh, 2.5rem); color: #705d75; margin-bottom: 5px;">
+                Exhibit A: Evidence of Us ✨
+            </h2>
+
+            <div id="clothesline-scroll-container" class="reveal-fade reveal-delay-2">
+                <!-- Rows injected via JS -->
+            </div>
+
+            <p style="text-align: center; color: #888; font-size: 0.85rem; margin-top: 5px; margin-bottom: 5px;"
+                class="reveal-pop">
+                (Hover to pause the memories 🧺)
+            </p>
+
+            <!-- Scroll Down Surprise -->
+            <div class="reveal-pop reveal-delay-3" style="display: flex; justify-content: center; margin-bottom: 5px;">
+                <!-- No background pill, just the content -->
+                <div class="scroll-down-container"
+                    onclick="document.getElementById('quiz-section').scrollIntoView({behavior: 'smooth'})"
+                    style="padding: 5px;">
+
+                    <div class="scroll-chevron"></div>
+                    <div class="scroll-chevron"></div>
+                    <div class="scroll-chevron"></div>
+
+                    <p class="scroll-text" style="font-size: 1.2rem; margin-top: 5px;">Scroll for Love</p>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <!-- HIDDEN LETTER -->
-        <div class="scrappy-wrapper" id="letter-wrapper-main" style="display: none;">
-            <div class="letter-shadow"></div>
-            <div class="letter-paper"></div>
-            <div class="letter-content">
-                <h2>Dear Nandu,</h2>
-                <p>
-                    I’ve been sitting here trying to put into words what you mean to me,
-                    and it’s harder than I thought—mostly because "friend" feels like
-                    such a small word for someone who occupies so much of my heart.
-                </p>
-                <p>
-                    You’ve become my safe space. In a world that’s constantly moving, you’re the one person who makes
-                    everything feel still and right.
-                    You are my favorite notification—the one that makes me pick up my phone with a smile before I’ve
-                    even read the message.
-                    Whether you’re being Nandu or just my Tutuu, I’ve realized that I adore every single version of
-                    you.
-                </p>
-                <p>
-                    Thank you for handling my craziness and for being the incredible, one-of-a-kind person you are.
-                    I don’t know exactly what the future looks like, but I do know that I want you in every part of it.
-                    I want more of our laughs, more of our "no" buttons running away, and a lot more "us."
-                </p>
-                <p>
-                    You make my life better just by being in it. I hope you know how much I truly, deeply care about
-                    you.
-                </p>
+        <!-- CSS Overrides for Compact View -->
+        <style>
+            #clothesline-scroll-container {
+                height: min(650px, 70vh);
+                /* Increased height slightly for bigger images */
+                margin: 10px 0;
+                overflow: visible;
+                /* Keep visible to allow sway overlap without clipping */
+            }
 
-                <p class="letter-signature">Always yours,<br>🦥</p>
+            .clothesline-row {
+                height: 50%;
+                /* Strictly half the container */
+                margin-bottom: 0;
+            }
+
+            .photo-inner {
+                width: 180px;
+                /* Increased from 150px */
+                padding: 10px 10px 40px 10px;
+                /* Slightly larger padding */
+            }
+
+            .photo-inner img {
+                height: 200px;
+                /* Increased from 160px */
+            }
+
+            .hanging-photo {
+                margin: 0 25px;
+                /* Significantly increased gap (was 15px) */
+            }
+
+            .track-rope {
+                top: 30px;
+                /* Adjusted lower for bigger scale */
+            }
+        </style>
+        </section>
+
+        <!-- QUIZ -->
+        <section id="quiz-section" class="section" style="position: relative;">
+            <!-- Floating Atmosphere -->
+            <div class="cloud" style="top: 20%; left: 10%; font-size: 4rem;">☁️</div>
+            <div class="cloud" style="top: 15%; right: 15%; font-size: 3rem; animation-delay: 2s;">☁️</div>
+            <div class="cloud" style="bottom: 30%; left: 20%; font-size: 2.5rem; animation-delay: 5s;">⭐</div>
+            <div class="cloud" style="top: 40%; right: 5%; font-size: 2rem; animation-delay: 3s;">✨</div>
+
+            <div class="quiz-wrapper reveal" id="quiz-wrapper-main">
+                <div class="quiz-enhanced">
+                    <div id="quiz-box">
+                        <h2>Ready for a question? 💭</h2>
+                        <button class="answer-btn" onclick="nextQuestion(1)">Yes, ask me!</button>
+                    </div>
+                </div>
             </div>
-        </div>
-        <footer class="site-footer">
-            <p>Made with all the love in the world for my Kuchupuchuu.</p>
-        </footer>
-    </section>
 
-    <!-- AUDIO SYSTEM -->
-    <audio id="bg-music" loop>
-        <source src="Music/bg.mp3" type="audio/mpeg">
-    </audio>
+            <!-- HIDDEN LETTER -->
+            <div class="scrappy-wrapper" id="letter-wrapper-main" style="display: none;">
+                <div class="letter-shadow"></div>
+                <div class="letter-paper"></div>
+                <div class="letter-content">
+                    <h2>Dear Nandu,</h2>
+                    <p>
+                        I’ve been sitting here trying to put into words what you mean to me,
+                        and it’s harder than I thought—mostly because "friend" feels like
+                        such a small word for someone who occupies so much of my heart.
+                    </p>
+                    <p>
+                        You’ve become my safe space. In a world that’s constantly moving, you’re the one person who
+                        makes
+                        everything feel still and right.
+                        You are my favorite notification—the one that makes me pick up my phone with a smile before I’ve
+                        even read the message.
+                        Whether you’re being Nandu or just my Tutuu, I’ve realized that I adore every single version of
+                        you.
+                    </p>
+                    <p>
+                        Thank you for handling my craziness and for being the incredible, one-of-a-kind person you are.
+                        I don’t know exactly what the future looks like, but I do know that I want you in every part of
+                        it.
+                        I want more of our laughs, more of our "no" buttons running away, and a lot more "us."
+                    </p>
+                    <p>
+                        You make my life better just by being in it. I hope you know how much I truly, deeply care about
+                        you.
+                    </p>
 
-    <!-- SFX SYSTEM -->
-    <audio id="sfx-yes" src="Music/yes.mp3"></audio>
-    <audio id="sfx-no" src="Music/no.mp3"></audio>
-    <audio id="sfx-wrong" src="Music/wrong.mp3"></audio>
-    <audio id="sfx-wehe" src="Music/wehe.mp3"></audio>
-    <audio id="sfx-objection" src="Music/objection.mp3"></audio>
-    <audio id="sfx-tada" src="Music/tada.mp3"></audio>
-    <audio id="sfx-keyboard" src="Music/keyboard.mp3"></audio>
-    <audio id="sfx-quiz" src="Music/quiz.mp3"></audio>
+                    <p class="letter-signature">Always yours,<br>🦥</p>
+                </div>
+            </div>
+            <footer class="site-footer">
+                <p>Made with all the love in the world for my Kuchupuchuu.</p>
+            </footer>
+        </section>
 
-    <script>
-        // --- V13: Global Photo Data (Moved up for preloader) ---
-        const photoData = [
-            { url: "images/photo1.jpg", caption: "Remeber This?" },
-            { url: "images/photo2.jpg", caption: "Aishcreem" },
-            { url: "images/photo3.jpg", caption: "Silly Face" },
-            { url: "images/photo4.jpg", caption: "On the Floor!" },
-            { url: "images/photo5.jpg", caption: "Love Ya" },
-            { url: "images/photo6.jpg", caption: "Smile..!" },
-            { url: "images/photo7.jpg", caption: "Estetik" },
-            { url: "images/photo8.jpg", caption: "Fav Memory" },
-            { url: "images/photo9.jpg", caption: "Forever" },
-            { url: "images/photo10.jpg", caption: "Vroom Vroom" },
-            { url: "images/photo11.jpg", caption: "Let's Racee!" },
-            { url: "images/photo12.jpg", caption: "Adventure" }
-        ];
+        <!-- AUDIO SYSTEM -->
+        <audio id="bg-music" loop>
+            <source src="Music/bg.mp3" type="audio/mpeg">
+        </audio>
 
-        // --- SFX Manager ---
-        function playSound(id) {
-            const audio = document.getElementById('sfx-' + id);
-            if (audio) {
-                audio.currentTime = 0;
-                audio.volume = 0.6;
-                audio.play().catch(e => console.log('SFX block:', e));
-            }
-        }
+        <!-- SFX SYSTEM -->
+        <audio id="sfx-yes" src="Music/yes.mp3"></audio>
+        <audio id="sfx-no" src="Music/no.mp3"></audio>
+        <audio id="sfx-wrong" src="Music/wrong.mp3"></audio>
+        <audio id="sfx-wehe" src="Music/wehe.mp3"></audio>
+        <audio id="sfx-objection" src="Music/objection.mp3"></audio>
+        <audio id="sfx-tada" src="Music/tada.mp3"></audio>
+        <audio id="sfx-keyboard" src="Music/keyboard.mp3"></audio>
+        <audio id="sfx-quiz" src="Music/quiz.mp3"></audio>
 
-        // 1. Floating Lavender/Purple Animation
-        function createHeart() {
-            const container = document.getElementById('hearts-container');
-            const heart = document.createElement('div');
-            heart.classList.add('heart');
-            // Lavender & Purple Theme Emojis
-            heart.innerHTML = ['🪻', '💜', '✨', '🍇', '☂️', '🫧'][Math.floor(Math.random() * 6)];
-            heart.style.left = Math.random() * 100 + 'vw';
-            heart.style.animationDuration = Math.random() * 3 + 3 + 's';
-            heart.style.fontSize = Math.random() * 20 + 10 + 'px';
-            // Random blur for depth
-            if (Math.random() > 0.5) heart.style.filter = 'blur(1px)';
-            container.appendChild(heart);
+        <script>
+            // --- V13: Global Photo Data (Moved up for preloader) ---
+            const photoData = [
+                { url: "images/photo1.jpg", caption: "Remeber This?" },
+                { url: "images/photo2.jpg", caption: "Aishcreem" },
+                { url: "images/photo3.jpg", caption: "Silly Face" },
+                { url: "images/photo4.jpg", caption: "On the Floor!" },
+                { url: "images/photo5.jpg", caption: "Love Ya" },
+                { url: "images/photo6.jpg", caption: "Smile..!" },
+                { url: "images/photo7.jpg", caption: "Estetik" },
+                { url: "images/photo8.jpg", caption: "Fav Memory" },
+                { url: "images/photo9.jpg", caption: "Forever" },
+                { url: "images/photo10.jpg", caption: "Vroom Vroom" },
+                { url: "images/photo11.jpg", caption: "Let's Racee!" },
+                { url: "images/photo12.jpg", caption: "Adventure" }
+            ];
 
-            setTimeout(() => {
-                heart.remove();
-            }, 6000);
-        }
-        setInterval(createHeart, 400);
-
-        //  1.1 Magic Wand Sparkle Trail
-        document.addEventListener('mousemove', function (e) {
-            // Throttle: Only create sparkles 40% of the time for a lighter trail
-            if (Math.random() > 0.4) return;
-
-            // Create sparkle
-            const sparkle = document.createElement('div');
-            sparkle.classList.add('sparkle');
-            sparkle.style.left = e.pageX + 'px';
-            sparkle.style.top = e.pageY + 'px';
-
-            // Random size variation (Balanced trace)
-            const size = Math.random() * 15 + 8;
-            sparkle.style.width = size + 'px';
-            sparkle.style.height = size + 'px';
-
-            document.body.appendChild(sparkle);
-
-            // Remove after animation
-            setTimeout(() => {
-                sparkle.remove();
-            }, 1000);
-        });
-
-        //  1.5 Friendship Counter
-        function updateCounter() {
-            const startDate = new Date("2018-06-05T00:00:00"); // June 5, 2018
-            const now = new Date();
-            const diff = now - startDate;
-
-            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-            const minutes = Math.floor((diff / 1000 / 60) % 60);
-            const seconds = Math.floor((diff / 1000) % 60);
-
-            document.getElementById("time-count").innerText =
-                `${days} Days, ${hours} Hours, ${minutes} Mins, ${seconds} Secs`;
-        }
-        setInterval(updateCounter, 1000);
-        updateCounter(); // Run immediately
-
-        // 1.6 Contextual BGM Manager 
-        const bgMusic = document.getElementById('bg-music');
-        let bgmInitialized = false;
-        let fadeInterval = null;
-
-        // Auto-pause BG Music when tab is inactive
-        document.addEventListener('visibilitychange', () => {
-            if (document.hidden) {
-                if (!bgMusic.paused) {
-                    bgMusic.pause();
-                }
-            } else {
-                // Resume only if we have started the experience
-                if (bgmInitialized && bgMusic.paused) {
-                    bgMusic.play().catch(e => console.log("Auto-resume failed:", e));
+            // --- SFX Manager ---
+            function playSound(id) {
+                const audio = document.getElementById('sfx-' + id);
+                if (audio) {
+                    audio.currentTime = 0;
+                    audio.volume = 0.6;
+                    audio.play().catch(e => console.log('SFX block:', e));
                 }
             }
-        });
 
-        // NEW: Splash Emoji Rain 
-        let splashRainInterval = setInterval(() => {
-            const container = document.getElementById('splash-hearts');
-            if (!container) return;
-            const emoji = document.createElement('div');
-            emoji.innerText = ['💜', '✨', '⚖️', '🦄', '🌸', '🪄'][Math.floor(Math.random() * 6)];
-            emoji.style.position = 'absolute';
-            emoji.style.left = Math.random() * 100 + 'vw';
-            emoji.style.top = '-50px';
-            emoji.style.fontSize = Math.random() * 20 + 25 + 'px';
-            emoji.style.transition = `top ${Math.random() * 3 + 5}s linear, opacity 1s, transform 5s linear`;
-            emoji.style.opacity = '0.7';
-            emoji.style.zIndex = '1';
-            emoji.style.transform = `rotate(${Math.random() * 360}deg)`;
+            // 1. Floating Lavender/Purple Animation
+            function createHeart() {
+                const container = document.getElementById('hearts-container');
+                const heart = document.createElement('div');
+                heart.classList.add('heart');
+                // Lavender & Purple Theme Emojis
+                heart.innerHTML = ['🪻', '💜', '✨', '🍇', '☂️', '🫧'][Math.floor(Math.random() * 6)];
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.animationDuration = Math.random() * 3 + 3 + 's';
+                heart.style.fontSize = Math.random() * 20 + 10 + 'px';
+                // Random blur for depth
+                if (Math.random() > 0.5) heart.style.filter = 'blur(1px)';
+                container.appendChild(heart);
 
-            container.appendChild(emoji);
+                setTimeout(() => {
+                    heart.remove();
+                }, 6000);
+            }
+            setInterval(createHeart, 400);
 
-            setTimeout(() => {
-                emoji.style.top = '110vh';
-                emoji.style.transform = `rotate(${Math.random() * 720}deg)`;
-            }, 50);
-            setTimeout(() => { emoji.remove(); }, 8000);
-        }, 250);
+            //  1.1 Magic Wand Sparkle Trail
+            document.addEventListener('mousemove', function (e) {
+                // Throttle: Only create sparkles 40% of the time for a lighter trail
+                if (Math.random() > 0.4) return;
 
-        // 1.10 Media Preloader Logic (V13)
-        const mediaToPreload = {
-            images: photoData.map(p => p.url),
-            audio: [
-                'bg-music',
-                'sfx-yes', 'sfx-no', 'sfx-wrong', 'sfx-wehe',
-                'sfx-objection', 'sfx-tada', 'sfx-keyboard', 'sfx-quiz'
-            ]
-        };
+                // Create sparkle
+                const sparkle = document.createElement('div');
+                sparkle.classList.add('sparkle');
+                sparkle.style.left = e.pageX + 'px';
+                sparkle.style.top = e.pageY + 'px';
 
-        let preloadingStatus = {
-            loaded: 0,
-            total: mediaToPreload.images.length + mediaToPreload.audio.length,
-            isComplete: false
-        };
+                // Random size variation (Balanced trace)
+                const size = Math.random() * 15 + 8;
+                sparkle.style.width = size + 'px';
+                sparkle.style.height = size + 'px';
 
-        function initPreloader() {
-            let loadedCount = 0;
-            const totalCount = preloadingStatus.total;
+                document.body.appendChild(sparkle);
 
-            const checkResolve = (e) => {
-                loadedCount++;
-                preloadingStatus.loaded = loadedCount;
-                if (loadedCount >= totalCount) {
-                    preloadingStatus.isComplete = true;
-                    console.log("All media preloaded successfully.");
-                }
-            };
-
-            // Preload Images
-            mediaToPreload.images.forEach(url => {
-                const img = new Image();
-                img.onload = checkResolve;
-                img.onerror = checkResolve; // Continue anyway
-                img.src = url;
+                // Remove after animation
+                setTimeout(() => {
+                    sparkle.remove();
+                }, 1000);
             });
 
-            // Preload Audio
-            mediaToPreload.audio.forEach(id => {
-                const aud = document.getElementById(id);
-                if (aud) {
-                    // readyState 4 = HAVE_ENOUGH_DATA
-                    if (aud.readyState >= 3) {
-                        checkResolve();
-                    } else {
-                        aud.addEventListener('canplaythrough', checkResolve, { once: true });
-                        aud.addEventListener('error', checkResolve, { once: true });
-                        aud.load();
+            //  1.5 Friendship Counter
+            function updateCounter() {
+                const startDate = new Date("2018-06-05T00:00:00"); // June 5, 2018
+                const now = new Date();
+                const diff = now - startDate;
+
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+                const minutes = Math.floor((diff / 1000 / 60) % 60);
+                const seconds = Math.floor((diff / 1000) % 60);
+
+                document.getElementById("time-count").innerText =
+                    `${days} Days, ${hours} Hours, ${minutes} Mins, ${seconds} Secs`;
+            }
+            setInterval(updateCounter, 1000);
+            updateCounter(); // Run immediately
+
+            // 1.6 Contextual BGM Manager 
+            const bgMusic = document.getElementById('bg-music');
+            let bgmInitialized = false;
+            let fadeInterval = null;
+
+            // Auto-pause BG Music when tab is inactive
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden) {
+                    if (!bgMusic.paused) {
+                        bgMusic.pause();
                     }
                 } else {
-                    checkResolve();
+                    // Resume only if we have started the experience
+                    if (bgmInitialized && bgMusic.paused) {
+                        bgMusic.play().catch(e => console.log("Auto-resume failed:", e));
+                    }
                 }
             });
-        }
 
-        // Start preloading immediately
-        initPreloader();
+            // NEW: Splash Emoji Rain 
+            let splashRainInterval = setInterval(() => {
+                const container = document.getElementById('splash-hearts');
+                if (!container) return;
+                const emoji = document.createElement('div');
+                emoji.innerText = ['💜', '✨', '⚖️', '🦄', '🌸', '🪄'][Math.floor(Math.random() * 6)];
+                emoji.style.position = 'absolute';
+                emoji.style.left = Math.random() * 100 + 'vw';
+                emoji.style.top = '-50px';
+                emoji.style.fontSize = Math.random() * 20 + 25 + 'px';
+                emoji.style.transition = `top ${Math.random() * 3 + 5}s linear, opacity 1s, transform 5s linear`;
+                emoji.style.opacity = '0.7';
+                emoji.style.zIndex = '1';
+                emoji.style.transform = `rotate(${Math.random() * 360}deg)`;
 
-        function unlockExperience() {
-            // V13: Check if preloading is complete
-            if (!preloadingStatus.isComplete) {
-                if (typeof showToast === 'function') {
-                    showToast("Try again, media is loading... ⏳");
-                } else {
-                    alert("Try again, media is loading... ⏳");
-                }
-                return;
-            }
+                container.appendChild(emoji);
 
-            // Stop splash rain
-            clearInterval(splashRainInterval);
+                setTimeout(() => {
+                    emoji.style.top = '110vh';
+                    emoji.style.transform = `rotate(${Math.random() * 720}deg)`;
+                }, 50);
+                setTimeout(() => { emoji.remove(); }, 8000);
+            }, 250);
 
-            // Hide splash immediately
-            const splash = document.getElementById('splash-overlay');
-            splash.classList.add('hidden');
+            // 1.10 Media Preloader Logic (V13)
+            const mediaToPreload = {
+                images: photoData.map(p => p.url),
+                audio: [
+                    'bg-music',
+                    'sfx-yes', 'sfx-no', 'sfx-wrong', 'sfx-wehe',
+                    'sfx-objection', 'sfx-tada', 'sfx-keyboard', 'sfx-quiz'
+                ]
+            };
 
-            window.scrollTo({ top: 0, behavior: 'instant' });
+            let preloadingStatus = {
+                loaded: 0,
+                total: mediaToPreload.images.length + mediaToPreload.audio.length,
+                isComplete: false
+            };
 
-            // Unlock and Play BGM
-            bgmInitialized = true;
-            bgMusic.src = 'Music/bg.mp3';
-            bgMusic.currentTime = 0;
-            bgMusic.volume = 0;
-            bgMusic.loop = true;
+            function initPreloader() {
+                let loadedCount = 0;
+                const totalCount = preloadingStatus.total;
 
-            setTimeout(() => {
-                bgMusic.play().catch(e => console.log("Audio unlock failed:", e));
-                fadeBGM(1, 1500);
-            }, 300);
+                const checkResolve = (e) => {
+                    loadedCount++;
+                    preloadingStatus.loaded = loadedCount;
+                    if (loadedCount >= totalCount) {
+                        preloadingStatus.isComplete = true;
+                        console.log("All media preloaded successfully.");
+                    }
+                };
 
-            // Unlock sections after splash fade
-            setTimeout(() => {
-                const hero = document.getElementById('hero-section');
-                hero.classList.remove('locked');
-                hero.querySelectorAll('.reveal, .reveal-pop, .reveal-fade').forEach(el => {
-                    el.classList.add('active');
+                // Preload Images
+                mediaToPreload.images.forEach(url => {
+                    const img = new Image();
+                    img.onload = checkResolve;
+                    img.onerror = checkResolve; // Continue anyway
+                    img.src = url;
                 });
-            }, 800);
-        }
 
-        function fadeBGM(targetVolume, duration = 1000, onComplete = null) {
-            if (!bgmInitialized) return;
-            if (fadeInterval) clearInterval(fadeInterval);
-
-            // If we are fading in and paused, play first
-            if (targetVolume > 0 && bgMusic.paused) {
-                bgMusic.play().catch(e => console.log("Fade-play failed:", e));
+                // Preload Audio
+                mediaToPreload.audio.forEach(id => {
+                    const aud = document.getElementById(id);
+                    if (aud) {
+                        // readyState 4 = HAVE_ENOUGH_DATA
+                        if (aud.readyState >= 3) {
+                            checkResolve();
+                        } else {
+                            aud.addEventListener('canplaythrough', checkResolve, { once: true });
+                            aud.addEventListener('error', checkResolve, { once: true });
+                            aud.load();
+                        }
+                    } else {
+                        checkResolve();
+                    }
+                });
             }
 
-            const startVolume = bgMusic.volume;
-            const diff = targetVolume - startVolume;
-            const steps = 30; // Smooth 30 steps
-            const stepMs = duration / steps;
-            let currentStep = 0;
+            // Start preloading immediately
+            initPreloader();
 
-            fadeInterval = setInterval(() => {
-                currentStep++;
-                bgMusic.volume = Math.max(0, Math.min(1, startVolume + (diff * (currentStep / steps))));
-
-                if (currentStep >= steps) {
-                    bgMusic.volume = targetVolume;
-                    clearInterval(fadeInterval);
-                    if (targetVolume === 0) bgMusic.pause();
-                    if (onComplete) onComplete();
-                }
-            }, stepMs);
-        }
-
-
-        const activeSections = new Set();
-        const bgmObserverCallback = (entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) activeSections.add(entry.target.id);
-                else activeSections.delete(entry.target.id);
-            });
-
-            // Ensure BG Music is playing and at correct volume if visible
-            const isPlayingBG = bgMusic.src && bgMusic.src.includes('bg.mp3');
-            if (!isPlayingBG) {
-                fadeBGM(1);
-            } else if (bgMusic.volume === 0 && activeSections.size > 0) {
-                fadeBGM(1);
-            }
-        };
-
-        const bgmObserver = new IntersectionObserver(bgmObserverCallback, { threshold: 0.2 });
-
-        document.querySelectorAll('#hero-section, #gallery-section, #quiz-section').forEach(el => {
-            bgmObserver.observe(el);
-        });
-
-        // 1.7 Scroll Reveal Observer
-        const revealCallback = (entries, observer) => {
-            entries.forEach(entry => {
-                // If the section is locked (during splash), ignore everything.
-                const section = entry.target.closest('section');
-                if (section && section.classList.contains('locked')) {
+            function unlockExperience() {
+                // V13: Check if preloading is complete
+                if (!preloadingStatus.isComplete) {
+                    if (typeof showToast === 'function') {
+                        showToast("Try again, media is loading... ⏳");
+                    } else {
+                        alert("Try again, media is loading... ⏳");
+                    }
                     return;
                 }
 
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('active');
-                } else {
-                    // Restore re-trigger on scroll back!
-                    entry.target.classList.remove('active');
-                }
-            });
-        };
+                // Stop splash rain
+                clearInterval(splashRainInterval);
 
-        const revealObserver = new IntersectionObserver(revealCallback, {
-            threshold: 0.1, // Lower threshold for better sensitivity
-            rootMargin: '0px 0px -50px 0px'
-        });
+                // Hide splash immediately
+                const splash = document.getElementById('splash-overlay');
+                splash.classList.add('hidden');
 
-        // Observe everything EXCEPT Hero initially? No, we observe all, but unobserve Hero on unlock.
-        document.querySelectorAll('.reveal, .reveal-pop, .reveal-fade').forEach(el => {
-            revealObserver.observe(el);
-        });
-        // Also observe the section itself for the broad unlock
-        revealObserver.observe(document.getElementById('hero-section'));
+                window.scrollTo({ top: 0, behavior: 'instant' });
 
-        // 1.6 Flower Shower (Full Screen)
-        function flowerShower() {
-            const container = document.getElementById('hearts-container');
-            const emojis = ['🪻', '💜', '✨', '🍇', '☂️', '🫧', '🦄', '🧚‍♀️'];
-
-            // Create 300 emojis for full coverage
-            for (let i = 0; i < 300; i++) {
-                const confetti = document.createElement('div');
-                confetti.innerText = emojis[Math.floor(Math.random() * emojis.length)];
-                confetti.style.position = 'fixed';
-                confetti.style.left = Math.random() * 100 + 'vw';
-                confetti.style.top = '-10vh';
-                confetti.style.fontSize = Math.random() * 20 + 10 + 'px';
-                confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
-                confetti.style.zIndex = 9999;
-                confetti.style.transition = `top ${Math.random() * 3 + 2}s ease-in, opacity ${Math.random() * 2 + 3}s`;
-
-                container.appendChild(confetti);
+                // Unlock and Play BGM
+                bgmInitialized = true;
+                bgMusic.src = 'Music/bg.mp3';
+                bgMusic.currentTime = 0;
+                bgMusic.volume = 0;
+                bgMusic.loop = true;
 
                 setTimeout(() => {
-                    confetti.style.top = '110vh';
-                    confetti.style.opacity = 0;
-                }, 100);
+                    bgMusic.play().catch(e => console.log("Audio unlock failed:", e));
+                    fadeBGM(1, 1500);
+                }, 300);
 
+                // Unlock sections after splash fade
                 setTimeout(() => {
-                    confetti.remove();
-                }, 5000);
+                    const hero = document.getElementById('hero-section');
+                    hero.classList.remove('locked');
+                    hero.querySelectorAll('.reveal, .reveal-pop, .reveal-fade').forEach(el => {
+                        el.classList.add('active');
+                    });
+                }, 800);
             }
-        }
 
-        // 1.8 REALISTIC Smoke Explosion (Physics Based)
-        function smokeExplosion(x, y) {
-            const container = document.body;
-            const particleCount = 150; // MASSIVE EXPLOSION
+            function fadeBGM(targetVolume, duration = 1000, onComplete = null) {
+                if (!bgmInitialized) return;
+                if (fadeInterval) clearInterval(fadeInterval);
 
-            for (let i = 0; i < particleCount; i++) {
-                const particle = document.createElement('div');
-
-                // Randomize type: Smoke vs Sparkle
-                const isSparkle = Math.random() > 0.7;
-
-                particle.style.position = 'fixed';
-                particle.style.left = x + 'px';
-                particle.style.top = y + 'px';
-                particle.style.borderRadius = '50%';
-                particle.style.pointerEvents = 'none';
-                particle.style.zIndex = 10001;
-
-                if (isSparkle) {
-                    particle.style.width = Math.random() * 8 + 2 + 'px';
-                    particle.style.height = particle.style.width;
-                    particle.style.background = '#FFF'; // Sparkle
-                    particle.style.boxShadow = '0 0 10px #FFF';
-                } else {
-                    // 3D Ball
-                    particle.style.width = Math.random() * 15 + 10 + 'px';
-                    particle.style.height = particle.style.width;
-                    const hue = Math.floor(Math.random() * 60 + 260); // Purple/Violet range
-                    particle.style.background = `radial-gradient(circle at 30% 30%, rgba(255,255,255,0.95), hsla(${hue}, 70%, 60%, 1), hsla(${hue}, 80%, 40%, 1))`;
-                    particle.style.boxShadow = '2px 2px 5px rgba(0,0,0,0.3)';
-                    // No blur for solid 3D look
+                // If we are fading in and paused, play first
+                if (targetVolume > 0 && bgMusic.paused) {
+                    bgMusic.play().catch(e => console.log("Fade-play failed:", e));
                 }
 
-                container.appendChild(particle);
+                const startVolume = bgMusic.volume;
+                const diff = targetVolume - startVolume;
+                const steps = 30; // Smooth 30 steps
+                const stepMs = duration / steps;
+                let currentStep = 0;
 
-                // PHYSICS 2.0: Gravity & Bounce
-                const velocityDefault = Math.random() * 800 + 400; // FAST explosive power
-                const angle = Math.random() * Math.PI * 2;
-                const vx = Math.cos(angle) * (Math.random() * 300); // Horizontal spread
-                const vy = Math.sin(angle) * velocityDefault * -1; // Shoot UP first
+                fadeInterval = setInterval(() => {
+                    currentStep++;
+                    bgMusic.volume = Math.max(0, Math.min(1, startVolume + (diff * (currentStep / steps))));
 
-                const animation = particle.animate([
-                    { transform: `translate(0, 0)`, opacity: 1 },
-                    { transform: `translate(${vx}px, ${vy * 0.2}px)`, opacity: 1, offset: 0.1 }, // Peak
-                    { transform: `translate(${vx * 1.5}px, ${600 + Math.random() * 200}px)`, opacity: 0 } // Fall down
-                ], {
-                    duration: Math.random() * 1000 + 1000,
-                    easing: 'cubic-bezier(0.25, 1, 0.5, 1)'
+                    if (currentStep >= steps) {
+                        bgMusic.volume = targetVolume;
+                        clearInterval(fadeInterval);
+                        if (targetVolume === 0) bgMusic.pause();
+                        if (onComplete) onComplete();
+                    }
+                }, stepMs);
+            }
+
+
+            const activeSections = new Set();
+            const bgmObserverCallback = (entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) activeSections.add(entry.target.id);
+                    else activeSections.delete(entry.target.id);
                 });
 
-                animation.onfinish = () => particle.remove();
+                // Ensure BG Music is playing and at correct volume if visible
+                const isPlayingBG = bgMusic.src && bgMusic.src.includes('bg.mp3');
+                if (!isPlayingBG) {
+                    fadeBGM(1);
+                } else if (bgMusic.volume === 0 && activeSections.size > 0) {
+                    fadeBGM(1);
+                }
+            };
+
+            const bgmObserver = new IntersectionObserver(bgmObserverCallback, { threshold: 0.2 });
+
+            document.querySelectorAll('#hero-section, #gallery-section, #quiz-section').forEach(el => {
+                bgmObserver.observe(el);
+            });
+
+            // 1.7 Scroll Reveal Observer
+            const revealCallback = (entries, observer) => {
+                entries.forEach(entry => {
+                    // If the section is locked (during splash), ignore everything.
+                    const section = entry.target.closest('section');
+                    if (section && section.classList.contains('locked')) {
+                        return;
+                    }
+
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    } else {
+                        // Restore re-trigger on scroll back!
+                        entry.target.classList.remove('active');
+                    }
+                });
+            };
+
+            const revealObserver = new IntersectionObserver(revealCallback, {
+                threshold: 0.1, // Lower threshold for better sensitivity
+                rootMargin: '0px 0px -50px 0px'
+            });
+
+            // Observe everything EXCEPT Hero initially? No, we observe all, but unobserve Hero on unlock.
+            document.querySelectorAll('.reveal, .reveal-pop, .reveal-fade').forEach(el => {
+                revealObserver.observe(el);
+            });
+            // Also observe the section itself for the broad unlock
+            revealObserver.observe(document.getElementById('hero-section'));
+
+            // 1.6 Flower Shower (Full Screen)
+            function flowerShower() {
+                const container = document.getElementById('hearts-container');
+                const emojis = ['🪻', '💜', '✨', '🍇', '☂️', '🫧', '🦄', '🧚‍♀️'];
+
+                // Create 300 emojis for full coverage
+                for (let i = 0; i < 300; i++) {
+                    const confetti = document.createElement('div');
+                    confetti.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+                    confetti.style.position = 'fixed';
+                    confetti.style.left = Math.random() * 100 + 'vw';
+                    confetti.style.top = '-10vh';
+                    confetti.style.fontSize = Math.random() * 20 + 10 + 'px';
+                    confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+                    confetti.style.zIndex = 9999;
+                    confetti.style.transition = `top ${Math.random() * 3 + 2}s ease-in, opacity ${Math.random() * 2 + 3}s`;
+
+                    container.appendChild(confetti);
+
+                    setTimeout(() => {
+                        confetti.style.top = '110vh';
+                        confetti.style.opacity = 0;
+                    }, 100);
+
+                    setTimeout(() => {
+                        confetti.remove();
+                    }, 5000);
+                }
             }
 
-            // Add a "Shockwave" ring
-            const wave = document.createElement('div');
-            wave.style.position = 'fixed';
-            wave.style.left = x + 'px';
-            wave.style.top = y + 'px';
-            wave.style.width = '0px';
-            wave.style.height = '0px';
-            wave.style.border = '2px solid rgba(255, 255, 255, 0.8)';
-            wave.style.borderRadius = '50%';
-            wave.style.transform = 'translate(-50%, -50%)';
-            wave.style.zIndex = 10000;
-            container.appendChild(wave);
+            // 1.8 REALISTIC Smoke Explosion (Physics Based)
+            function smokeExplosion(x, y) {
+                const container = document.body;
+                const particleCount = 150; // MASSIVE EXPLOSION
 
-            wave.animate([
-                { width: '0px', height: '0px', opacity: 0.8, borderWidth: '10px' },
-                { width: '500px', height: '500px', opacity: 0, borderWidth: '0px' }
-            ], {
-                duration: 600,
-                easing: 'ease-out'
-            }).onfinish = () => wave.remove();
-        }
+                for (let i = 0; i < particleCount; i++) {
+                    const particle = document.createElement('div');
+
+                    // Randomize type: Smoke vs Sparkle
+                    const isSparkle = Math.random() > 0.7;
+
+                    particle.style.position = 'fixed';
+                    particle.style.left = x + 'px';
+                    particle.style.top = y + 'px';
+                    particle.style.borderRadius = '50%';
+                    particle.style.pointerEvents = 'none';
+                    particle.style.zIndex = 10001;
+
+                    if (isSparkle) {
+                        particle.style.width = Math.random() * 8 + 2 + 'px';
+                        particle.style.height = particle.style.width;
+                        particle.style.background = '#FFF'; // Sparkle
+                        particle.style.boxShadow = '0 0 10px #FFF';
+                    } else {
+                        // 3D Ball
+                        particle.style.width = Math.random() * 15 + 10 + 'px';
+                        particle.style.height = particle.style.width;
+                        const hue = Math.floor(Math.random() * 60 + 260); // Purple/Violet range
+                        particle.style.background = `radial-gradient(circle at 30% 30%, rgba(255,255,255,0.95), hsla(${hue}, 70%, 60%, 1), hsla(${hue}, 80%, 40%, 1))`;
+                        particle.style.boxShadow = '2px 2px 5px rgba(0,0,0,0.3)';
+                        // No blur for solid 3D look
+                    }
+
+                    container.appendChild(particle);
+
+                    // PHYSICS 2.0: Gravity & Bounce
+                    const velocityDefault = Math.random() * 800 + 400; // FAST explosive power
+                    const angle = Math.random() * Math.PI * 2;
+                    const vx = Math.cos(angle) * (Math.random() * 300); // Horizontal spread
+                    const vy = Math.sin(angle) * velocityDefault * -1; // Shoot UP first
+
+                    const animation = particle.animate([
+                        { transform: `translate(0, 0)`, opacity: 1 },
+                        { transform: `translate(${vx}px, ${vy * 0.2}px)`, opacity: 1, offset: 0.1 }, // Peak
+                        { transform: `translate(${vx * 1.5}px, ${600 + Math.random() * 200}px)`, opacity: 0 } // Fall down
+                    ], {
+                        duration: Math.random() * 1000 + 1000,
+                        easing: 'cubic-bezier(0.25, 1, 0.5, 1)'
+                    });
+
+                    animation.onfinish = () => particle.remove();
+                }
+
+                // Add a "Shockwave" ring
+                const wave = document.createElement('div');
+                wave.style.position = 'fixed';
+                wave.style.left = x + 'px';
+                wave.style.top = y + 'px';
+                wave.style.width = '0px';
+                wave.style.height = '0px';
+                wave.style.border = '2px solid rgba(255, 255, 255, 0.8)';
+                wave.style.borderRadius = '50%';
+                wave.style.transform = 'translate(-50%, -50%)';
+                wave.style.zIndex = 10000;
+                container.appendChild(wave);
+
+                wave.animate([
+                    { width: '0px', height: '0px', opacity: 0.8, borderWidth: '10px' },
+                    { width: '500px', height: '500px', opacity: 0, borderWidth: '0px' }
+                ], {
+                    duration: 600,
+                    easing: 'ease-out'
+                }).onfinish = () => wave.remove();
+            }
 
 
-        // 1.9 Memory Clothesline Gallery (Dual Auto-Scroll)
-        const clotheslineContainer = document.getElementById('clothesline-scroll-container');
+            // 1.9 Memory Clothesline Gallery (Dual Auto-Scroll)
+            const clotheslineContainer = document.getElementById('clothesline-scroll-container');
 
-        // 12 Gallery Images (Portraits with various ratios)
-        // 12 Gallery Images (Using relative paths for GitHub hosting)
-        // (Defined at top of script for preloading)
+            // 12 Gallery Images (Portraits with various ratios)
+            // 12 Gallery Images (Using relative paths for GitHub hosting)
+            // (Defined at top of script for preloading)
 
-        function initClothesline() {
-            // Split data into two rows
-            const row1Data = photoData.slice(0, 6);
-            const row2Data = photoData.slice(6, 12);
+            function initClothesline() {
+                // Split data into two rows
+                const row1Data = photoData.slice(0, 6);
+                const row2Data = photoData.slice(6, 12);
 
-            clotheslineContainer.innerHTML = `
+                clotheslineContainer.innerHTML = `
                 <!-- Row 1: Left to Right (Start offset -50% -> 0) -->
                 <!-- We need duplicate content for seamless loop -->
                 <!-- Track moves Right: translateX(0) -> translateX(50%) ??? No. -->
@@ -2168,19 +2235,19 @@
                     </div>
                 </div>
             `;
-        }
+            }
 
-        function renderTrack(items) {
-            let html = '<div class="track-segment" style="display:flex;">';
-            // Add rope inside segment
-            html += '<div class="track-rope"></div>';
+            function renderTrack(items) {
+                let html = '<div class="track-segment" style="display:flex;">';
+                // Add rope inside segment
+                html += '<div class="track-rope"></div>';
 
-            items.forEach((photo) => {
-                // Drop is constant (0s delay), Sway starts after Drop (2.5s)
-                const swayDuration = 6 + Math.random() * 2;
-                // Slow sway (6-8s) for even movement
+                items.forEach((photo) => {
+                    // Drop is constant (0s delay), Sway starts after Drop (2.5s)
+                    const swayDuration = 6 + Math.random() * 2;
+                    // Slow sway (6-8s) for even movement
 
-                html += `
+                    html += `
                     <div class="hanging-photo" style="animation-delay: 0s, 2.5s; animation-duration: 2.5s, ${swayDuration}s;">
                         <div class="photo-inner">
                             <img src="${photo.url}" alt="Memory" loading="lazy">
@@ -2188,43 +2255,43 @@
                         </div>
                     </div>
                 `;
-            });
-            html += '</div>';
-            return html;
-        }
-
-        // Initialize
-        initClothesline();
-
-        // 2. Quiz Logic (Legal Edition)
-        const quizBox = document.getElementById('quiz-box');
-        let currentStep = 0;
-
-        function nextQuestion(step) {
-            // SFX Logic
-            if (step === 1) {
-                playSound('quiz'); // Quiz Music Overlay
-                // V11.1: Reduce BG Volume by 40% (Target 0.6)
-                fadeBGM(0.6, 1000);
+                });
+                html += '</div>';
+                return html;
             }
-            else playSound('yes'); // Normal Yes steps
 
-            // Fade out
-            quizBox.style.opacity = '0';
+            // Initialize
+            initClothesline();
 
-            // Wait for fade out, then swap content
-            setTimeout(() => {
-                currentStep = step;
-                updateQuizContent(step);
-                // Fade in
-                quizBox.style.opacity = '1';
-            }, 200);
-        }
+            // 2. Quiz Logic (Legal Edition)
+            const quizBox = document.getElementById('quiz-box');
+            let currentStep = 0;
 
-        function updateQuizContent(step) {
-            // Step 1: Legal Start
-            if (step === 1) {
-                quizBox.innerHTML = `
+            function nextQuestion(step) {
+                // SFX Logic
+                if (step === 1) {
+                    playSound('quiz'); // Quiz Music Overlay
+                    // V11.1: Reduce BG Volume by 40% (Target 0.6)
+                    fadeBGM(0.6, 1000);
+                }
+                else playSound('yes'); // Normal Yes steps
+
+                // Fade out
+                quizBox.style.opacity = '0';
+
+                // Wait for fade out, then swap content
+                setTimeout(() => {
+                    currentStep = step;
+                    updateQuizContent(step);
+                    // Fade in
+                    quizBox.style.opacity = '1';
+                }, 200);
+            }
+
+            function updateQuizContent(step) {
+                // Step 1: Legal Start
+                if (step === 1) {
+                    quizBox.innerHTML = `
                     <h2>Cross-Examination in Progress ⚖️</h2>
                     <p style="margin-top: 15px; font-size: 1.2rem;">Do you swear you are my favorite person? 🤨</p>
                     <div style="margin-top: 30px;">
@@ -2232,65 +2299,65 @@
                         <button class="answer-btn no" onclick="showOverruled()">Objection! 👩‍⚖️</button>
                     </div>
                 `;
-            }
-            // Step 2: Affirmation
-            else if (step === 2) {
-                quizBox.innerHTML = `
+                }
+                // Step 2: Affirmation
+                else if (step === 2) {
+                    quizBox.innerHTML = `
                     <h2>SUSTAINED! 🎉</h2>
                     <p style="margin-top: 15px;">The court finds you delightfully amazing.</p>
                     <div style="margin-top: 30px;">
                         <button class="answer-btn yes" onclick="nextQuestion(3)">Proceed, Your Honor ➡️</button>
                     </div>
                 `;
-            }
+                }
 
-            // Step 3: Lucky
-            else if (step === 3) {
-                quizBox.innerHTML = `
+                // Step 3: Lucky
+                else if (step === 3) {
+                    quizBox.innerHTML = `
                     <h2>Are you lucky to have me as your counsel? 📜</h2>
                     <div style="margin-top: 30px; position: relative; height: 100px;">
                         <button class="answer-btn yes" onclick="nextQuestion(4)">I plead the 5th (Yes) 😌</button>
                         <button class="answer-btn no" onmouseover="runAway(this)" onclick="runAway(this)" style="position: absolute;">Objection! 🙄</button>
                     </div>
                 `;
-            }
+                }
 
-            // Step 4: Cute
-            else if (step === 4) {
-                quizBox.innerHTML = `
+                // Step 4: Cute
+                else if (step === 4) {
+                    quizBox.innerHTML = `
                     <h2>Is the defendant (me) the cutest? 🥺</h2>
                     <div style="margin-top: 30px; position: relative; height: 100px;">
                         <button class="answer-btn yes" onclick="nextQuestion(5)">Evidence implies YES 😘</button>
                         <button class="answer-btn no" onmouseover="runAway(this)" onclick="runAway(this)" style="position: absolute;">Overruled! 🤢</button>
                     </div>
                 `;
-            }
+                }
 
-            // Step 5: Forever
-            else if (step === 5) {
-                quizBox.innerHTML = `
+                // Step 5: Forever
+                else if (step === 5) {
+                    quizBox.innerHTML = `
                     <h2>Are we serving a life sentence together? 👯‍♀️</h2>
                     <div style="margin-top: 30px; position: relative; height: 100px;">
                         <button class="answer-btn yes" onclick="nextQuestion(6)">No Parole! 🔒</button>
                         <button class="answer-btn no" onmouseover="runAway(this)" onclick="runAway(this)" style="position: absolute;">Appealing... 🏃‍♀️</button>
                     </div>
                 `;
-            }
+                }
 
-            // Step 6: Miss Me
-            else if (step === 6) {
-                quizBox.innerHTML = `
+                // Step 6: Miss Me
+                else if (step === 6) {
+                    quizBox.innerHTML = `
                     <h2>Do you miss your lawyer right now? ☹️</h2>
                     <div style="margin-top: 30px; position: relative; height: 100px;">
                         <button class="answer-btn yes" onclick="nextQuestion(7)">Guilty as charged 🥺</button>
                         <button class="answer-btn no" onmouseover="runAway(this)" onclick="runAway(this)" style="position: absolute;">Silence! 😒</button>
                     </div>
                 `;
-            }
+                }
 
-            // Step 7: The Contract Setup
-            else if (step === 7) {
-                quizBox.innerHTML = `
+                // Step 7: The Contract Setup
+                else if (step === 7) {
+                    quizBox.innerHTML = `
                     <h2>Final Verdict? ❤️</h2>
                     
                     <div style="margin-top: 30px; position: relative; height: 100px;">
@@ -2298,17 +2365,17 @@
                         <button class="answer-btn no" id="no-btn" onmouseover="runAway(this)" onclick="runAway(this)" style="position: absolute;">Mistrial! 🙄</button>
                     </div>
                 `;
+                }
             }
-        }
 
-        // Show "Objection Overruled" logic
-        function showOverruled() {
-            playSound('wrong'); // Objection!
-            // Fade out
-            quizBox.style.opacity = '0';
+            // Show "Objection Overruled" logic
+            function showOverruled() {
+                playSound('wrong'); // Objection!
+                // Fade out
+                quizBox.style.opacity = '0';
 
-            setTimeout(() => {
-                quizBox.innerHTML = `
+                setTimeout(() => {
+                    quizBox.innerHTML = `
                     <div style="text-align: center;">
                         <div class="stamp">Overruled!</div>
                         <h2 style="font-family: 'Times New Roman', serif; margin-top: 10px;">COURT ORDER 🏛️</h2>
@@ -2322,104 +2389,104 @@
                         <button class="answer-btn yes" onclick="nextQuestion(1)">Understood 🥺</button>
                     </div>
                 `;
-                // Fade in
-                quizBox.style.opacity = '1';
-            }, 200);
-        }
-
-        // Run Away Function for "No" Button
-        function runAway(btn) {
-            playSound('no');
-            btn.style.position = 'absolute';
-
-            // Get container dimensions
-            const container = quizBox.getBoundingClientRect();
-            const btnRect = btn.getBoundingClientRect();
-
-            // Calculate available space relative to the container
-            const maxX = quizBox.offsetWidth - btn.offsetWidth - 20;
-            const maxY = quizBox.offsetHeight - btn.offsetHeight - 20;
-
-            let randomX, randomY;
-
-            // Ensure the button moves to a new position that is substantially different
-            // and tries to avoid the immediate area
-            let attempts = 0;
-            const currentX = parseFloat(btn.style.left || 0);
-            const currentY = parseFloat(btn.style.top || 0);
-
-            do {
-                randomX = Math.random() * maxX;
-                randomY = Math.random() * maxY;
-                attempts++;
-            } while (
-                // Keep trying if distance is too close (under 150px)
-                (Math.abs(randomX - currentX) < 150 || Math.abs(randomY - currentY) < 150) &&
-                attempts < 10 // Safety break to prevent infinite loops on small screens
-            );
-
-            // Apply different effects based on the current step
-
-            // Step 4 (Cute): Spin + Jump
-            if (currentStep === 4) {
-                const rotation = Math.random() * 360;
-                btn.style.transform = `rotate(${rotation}deg)`;
+                    // Fade in
+                    quizBox.style.opacity = '1';
+                }, 200);
             }
 
-            // Step 5 (Forever): Shrink + Jump
-            else if (currentStep === 5) {
-                // Ensure we get the current scale, defaulting to 1
-                let currentScale = 1;
-                // Check if there is an existing transform with scale
-                const transform = btn.style.transform;
-                if (transform && transform.includes('scale')) {
-                    const match = transform.match(/scale\(([^)]+)\)/);
-                    if (match) currentScale = parseFloat(match[1]);
+            // Run Away Function for "No" Button
+            function runAway(btn) {
+                playSound('no');
+                btn.style.position = 'absolute';
+
+                // Get container dimensions
+                const container = quizBox.getBoundingClientRect();
+                const btnRect = btn.getBoundingClientRect();
+
+                // Calculate available space relative to the container
+                const maxX = quizBox.offsetWidth - btn.offsetWidth - 20;
+                const maxY = quizBox.offsetHeight - btn.offsetHeight - 20;
+
+                let randomX, randomY;
+
+                // Ensure the button moves to a new position that is substantially different
+                // and tries to avoid the immediate area
+                let attempts = 0;
+                const currentX = parseFloat(btn.style.left || 0);
+                const currentY = parseFloat(btn.style.top || 0);
+
+                do {
+                    randomX = Math.random() * maxX;
+                    randomY = Math.random() * maxY;
+                    attempts++;
+                } while (
+                    // Keep trying if distance is too close (under 150px)
+                    (Math.abs(randomX - currentX) < 150 || Math.abs(randomY - currentY) < 150) &&
+                    attempts < 10 // Safety break to prevent infinite loops on small screens
+                );
+
+                // Apply different effects based on the current step
+
+                // Step 4 (Cute): Spin + Jump
+                if (currentStep === 4) {
+                    const rotation = Math.random() * 360;
+                    btn.style.transform = `rotate(${rotation}deg)`;
                 }
 
-                // Reduce scale
-                const newScale = Math.max(0.2, currentScale - 0.15);
-                btn.style.transform = `scale(${newScale})`;
+                // Step 5 (Forever): Shrink + Jump
+                else if (currentStep === 5) {
+                    // Ensure we get the current scale, defaulting to 1
+                    let currentScale = 1;
+                    // Check if there is an existing transform with scale
+                    const transform = btn.style.transform;
+                    if (transform && transform.includes('scale')) {
+                        const match = transform.match(/scale\(([^)]+)\)/);
+                        if (match) currentScale = parseFloat(match[1]);
+                    }
+
+                    // Reduce scale
+                    const newScale = Math.max(0.2, currentScale - 0.15);
+                    btn.style.transform = `scale(${newScale})`;
+                }
+
+                // Step 6 (Miss Me): Teleport (Instant movement)
+                else if (currentStep === 6) {
+                    // We force a style flush by setting transition to none, then applying position
+                    // The key is to NOT animate the 'left' and 'top' properties
+                    btn.style.transition = 'none';
+                }
+
+                // Step 7/8 (Trap): Fast & Crazy
+                else if (currentStep >= 7) {
+                    btn.style.transition = 'all 0.1s ease'; // Super fast
+                    btn.style.transform = `scale(${1 + Math.random() * 0.2}) rotate(${Math.random() * 20 - 10}deg)`; // Jitter
+                } else {
+                    // Default Smooth Movement (Restored)
+                    btn.style.transform = 'none';
+                    btn.style.transition = 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                }
+
+                btn.style.left = randomX + 'px';
+                btn.style.top = randomY + 'px';
+
+                // Change text for fun
+                const taunts = [
+                    "Can't catch me! 😝",
+                    "Try again! 😂",
+                    "Nope! 🙅‍♀️",
+                    "Too slow! 🐌",
+                    "Just click YES! ❤️",
+                    "Not this one! ☝️",
+                    "Missed me! 👻",
+                    "Nice try! 😉"
+                ];
+                btn.innerText = taunts[Math.floor(Math.random() * taunts.length)];
             }
 
-            // Step 6 (Miss Me): Teleport (Instant movement)
-            else if (currentStep === 6) {
-                // We force a style flush by setting transition to none, then applying position
-                // The key is to NOT animate the 'left' and 'top' properties
-                btn.style.transition = 'none';
-            }
-
-            // Step 7/8 (Trap): Fast & Crazy
-            else if (currentStep >= 7) {
-                btn.style.transition = 'all 0.1s ease'; // Super fast
-                btn.style.transform = `scale(${1 + Math.random() * 0.2}) rotate(${Math.random() * 20 - 10}deg)`; // Jitter
-            } else {
-                // Default Smooth Movement (Restored)
-                btn.style.transform = 'none';
-                btn.style.transition = 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
-            }
-
-            btn.style.left = randomX + 'px';
-            btn.style.top = randomY + 'px';
-
-            // Change text for fun
-            const taunts = [
-                "Can't catch me! 😝",
-                "Try again! 😂",
-                "Nope! 🙅‍♀️",
-                "Too slow! 🐌",
-                "Just click YES! ❤️",
-                "Not this one! ☝️",
-                "Missed me! 👻",
-                "Nice try! 😉"
-            ];
-            btn.innerText = taunts[Math.floor(Math.random() * taunts.length)];
-        }
-
-        // --- 3. The Love Contract Logic ---
-        function showContract() {
-            playSound('yes'); // "I Love You" click
-            quizBox.innerHTML = `
+            // --- 3. The Love Contract Logic ---
+            function showContract() {
+                playSound('yes'); // "I Love You" click
+                quizBox.innerHTML = `
                 <div class="contract-paper" style="border: 2px solid #555; padding: 20px; background: #fffdf0; position: relative;">
                     <div style="border: 1px dashed #333; padding: 15px;">
                         <h2 style="font-family: 'Times New Roman', serif; color: #333; margin-bottom: 0;">HIGH COURT OF BESTIES</h2>
@@ -2456,21 +2523,21 @@
                     <p id="tc-error" style="color: red; font-size: 0.8rem; display: none; margin-top: 5px;">* You must read and agree to the Terms!</p>
                 </div>
             `;
-        }
+            }
 
-        // --- Terms & Conditions Logic ---
-        function openTerms() {
-            // Create Overlay
-            const overlay = document.createElement('div');
-            overlay.id = 'tc-overlay';
-            overlay.style.cssText = `
+            // --- Terms & Conditions Logic ---
+            function openTerms() {
+                // Create Overlay
+                const overlay = document.createElement('div');
+                overlay.id = 'tc-overlay';
+                overlay.style.cssText = `
                 position: fixed; top: 0; left: 0; width: 100%; height: 100%;
                 background: rgba(0,0,0,0.6); z-index: 20000;
                 display: flex; justify-content: center; align-items: center;
                 backdrop-filter: blur(5px);
             `;
 
-            overlay.innerHTML = `
+                overlay.innerHTML = `
                 <div style="background: white; width: 90%; max-width: 500px; max-height: 80vh; border-radius: 10px; padding: 25px; overflow-y: auto; text-align: left; position: relative;">
                     <h2 style="font-family: 'Times New Roman', serif; text-align: center; color: #333; margin-bottom: 20px;">LEGAL TERMS & CONDITIONS 📜</h2>
                     
@@ -2501,44 +2568,44 @@
                     </div>
                 </div>
             `;
-            document.body.appendChild(overlay);
-        }
-
-        function agreeTerms() {
-            playSound('wehe'); // "Agreed & Understood"
-            // Close modal
-            const overlay = document.getElementById('tc-overlay');
-            if (overlay) overlay.remove();
-
-            // Check the box
-            const checkbox = document.getElementById('tc-checkbox');
-            if (checkbox) checkbox.checked = true;
-
-            // Hide error if present
-            const error = document.getElementById('tc-error');
-            if (error) error.style.display = 'none';
-        }
-
-        function signContract() {
-            // Validation Logic
-            const checkbox = document.getElementById('tc-checkbox');
-            const error = document.getElementById('tc-error');
-
-            if (!checkbox.checked) {
-                playSound('no');
-                error.style.display = 'block';
-                // Shake animation for fun
-                const btn = document.querySelector('#signature-area .answer-btn');
-                btn.style.animation = 'wiggle 0.3s ease';
-                setTimeout(() => btn.style.animation = 'none', 300);
-                return;
+                document.body.appendChild(overlay);
             }
 
-            const sigArea = document.getElementById('signature-area');
-            playSound('objection'); // Success SFX
+            function agreeTerms() {
+                playSound('wehe'); // "Agreed & Understood"
+                // Close modal
+                const overlay = document.getElementById('tc-overlay');
+                if (overlay) overlay.remove();
 
-            // Smoother "Sealing" Animation
-            sigArea.innerHTML = `
+                // Check the box
+                const checkbox = document.getElementById('tc-checkbox');
+                if (checkbox) checkbox.checked = true;
+
+                // Hide error if present
+                const error = document.getElementById('tc-error');
+                if (error) error.style.display = 'none';
+            }
+
+            function signContract() {
+                // Validation Logic
+                const checkbox = document.getElementById('tc-checkbox');
+                const error = document.getElementById('tc-error');
+
+                if (!checkbox.checked) {
+                    playSound('no');
+                    error.style.display = 'block';
+                    // Shake animation for fun
+                    const btn = document.querySelector('#signature-area .answer-btn');
+                    btn.style.animation = 'wiggle 0.3s ease';
+                    setTimeout(() => btn.style.animation = 'none', 300);
+                    return;
+                }
+
+                const sigArea = document.getElementById('signature-area');
+                playSound('objection'); // Success SFX
+
+                // Smoother "Sealing" Animation
+                sigArea.innerHTML = `
                 <div style="
                     color: #d32f2f; 
                     font-size: 2rem; 
@@ -2554,17 +2621,17 @@
                 </div>
             `;
 
-            // Trigger Envelope Reveal with smooth fade
-            setTimeout(() => {
-                sigArea.closest('.contract-paper').style.transition = "opacity 0.5s ease";
-                sigArea.closest('.contract-paper').style.opacity = "0";
-                setTimeout(showEnvelope, 500);
-            }, 1000);
-        }
+                // Trigger Envelope Reveal with smooth fade
+                setTimeout(() => {
+                    sigArea.closest('.contract-paper').style.transition = "opacity 0.5s ease";
+                    sigArea.closest('.contract-paper').style.opacity = "0";
+                    setTimeout(showEnvelope, 500);
+                }, 1000);
+            }
 
-        // --- 4. The Lavender Envelope (CUTE Version) ---
-        function showEnvelope() {
-            quizBox.innerHTML = `
+            // --- 4. The Lavender Envelope (CUTE Version) ---
+            function showEnvelope() {
+                quizBox.innerHTML = `
                 <div id="envelope-container" onclick="openEnvelope(event)">
                     <h2 style="color: #7E57C2; margin-bottom: 30px; font-family: 'Dancing Script';">A special delivery... 💜</h2>
                     
@@ -2580,232 +2647,233 @@
                     </div>
                 </div>
             `;
-        }
-
-        function openEnvelope(event) {
-            // Get envelope center for explosion and ball start interactions
-            let startX = window.innerWidth / 2;
-            let startY = window.innerHeight / 2;
-
-            // Try to find the envelope element for precise positioning
-            const envContainer = document.getElementById('envelope-container');
-            if (envContainer) {
-                const rect = envContainer.getBoundingClientRect();
-                startX = rect.left + rect.width / 2;
-                startY = rect.top + rect.height / 2;
-            } else if (event) {
-                startX = event.clientX;
-                startY = event.clientY;
             }
 
-            // 0. Smoke Explosion (At the envelope)
-            playSound('tada');
-            smokeExplosion(startX, startY);
+            function openEnvelope(event) {
+                // Get envelope center for explosion and ball start interactions
+                let startX = window.innerWidth / 2;
+                let startY = window.innerHeight / 2;
 
-            // 1. Hide the Quiz/Envelope Wrapper immediately
-            const quizWrapper = document.getElementById('quiz-wrapper-main');
-            if (quizWrapper) {
-                quizWrapper.style.transition = 'opacity 0.2s';
-                quizWrapper.style.opacity = '0';
-                setTimeout(() => quizWrapper.style.display = 'none', 200);
-            }
-
-            // 2. Play Sound/Confetti
-            flowerShower();
-
-            // 3. Drop the Paper Ball
-            dropPaperBall(startX, startY);
-        }
-
-        function dropPaperBall(x, y) {
-            const ball = document.createElement('div');
-            ball.className = 'paper-ball';
-            ball.style.left = x + 'px';
-            ball.style.top = y + 'px';
-            document.body.appendChild(ball);
-
-            // Calculate goal position (center of screen effectively, or where the letter will be)
-            // Since letter reveals "in place", let's drop it slightly down from the envelope position
-            const dropDistance = 200;
-
-            const animation = ball.animate([
-                { transform: 'translate(-50%, -50%) rotate(0deg)', top: y + 'px' },
-                { transform: 'translate(-50%, -50%) rotate(180deg)', top: (y - 50) + 'px', offset: 0.3 }, // Jump up slightly
-                { transform: 'translate(-50%, -50%) rotate(720deg)', top: (y + dropDistance) + 'px' } // Fall down
-            ], {
-                duration: 600,
-                easing: 'cubic-bezier(0.6, -0.28, 0.735, 0.045)' // Bounce/Fall like ease
-            });
-
-            animation.onfinish = () => {
-                ball.remove();
-                revealLetter();
-            };
-        }
-
-
-        function typeWriterHTML(element, html, speed) {
-            return new Promise(resolve => {
-                let i = 0;
-                element.innerHTML = '';
-                function type() {
-                    if (i < html.length) {
-                        // Check for HTML tag
-                        if (html.charAt(i) === '<') {
-                            let tag = '';
-                            while (html.charAt(i) !== '>' && i < html.length) {
-                                tag += html.charAt(i);
-                                i++;
-                            }
-                            tag += '>'; // Close the tag
-                            i++;
-                            element.innerHTML += tag;
-                            type(); // Skip delay for tags
-                        } else {
-                            element.innerHTML += html.charAt(i);
-                            i++;
-                            setTimeout(type, speed);
-                        }
-                    } else {
-                        resolve();
-                    }
+                // Try to find the envelope element for precise positioning
+                const envContainer = document.getElementById('envelope-container');
+                if (envContainer) {
+                    const rect = envContainer.getBoundingClientRect();
+                    startX = rect.left + rect.width / 2;
+                    startY = rect.top + rect.height / 2;
+                } else if (event) {
+                    startX = event.clientX;
+                    startY = event.clientY;
                 }
-                type();
-            });
-        }
 
-        async function revealLetter() {
-            const letterWrapper = document.getElementById('letter-wrapper-main');
-            if (letterWrapper) {
-                // 1. Show wrapper to calculate layout (start invisible)
-                letterWrapper.style.opacity = '0';
-                letterWrapper.style.display = 'block';
-                letterWrapper.style.animation = 'none';
+                // 0. Smoke Explosion (At the envelope)
+                playSound('tada');
+                smokeExplosion(startX, startY);
 
-                // 2. Measure Height of content
-                const contentDiv = letterWrapper.querySelector('.letter-content');
-                const elements = contentDiv.querySelectorAll('h2, p');
+                // 1. Hide the Quiz/Envelope Wrapper immediately
+                const quizWrapper = document.getElementById('quiz-wrapper-main');
+                if (quizWrapper) {
+                    quizWrapper.style.transition = 'opacity 0.2s';
+                    quizWrapper.style.opacity = '0';
+                    setTimeout(() => quizWrapper.style.display = 'none', 200);
+                }
 
-                // Ensure text is present for measurement
-                elements.forEach(el => {
-                    if (el.dataset.originalText) el.innerHTML = el.dataset.originalText;
-                });
+                // 2. Play Sound/Confetti
+                flowerShower();
 
-                const fullHeight = contentDiv.offsetHeight;
-
-                // 3. Freeze dimensions so it doesn't resize during typing
-                contentDiv.style.minHeight = fullHeight + 'px';
-
-                // 4. Save text and clear for animation
-                elements.forEach(el => {
-                    if (!el.dataset.originalText) {
-                        el.dataset.originalText = el.innerHTML;
-                    }
-                    el.innerHTML = ''; // Clear text
-                });
-
-                // Reset opacity for animation
-                letterWrapper.style.opacity = '';
-
-                // 5. Restart Animation
-                letterWrapper.offsetHeight; /* trigger reflow */
-                letterWrapper.style.animation = 'unfoldLetter 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards';
-
-
-
-                // Start Typing Sequence after paper unfolds
-                setTimeout(async () => {
-                    // Start Typing Sound (Boosted for V12)
-                    const kbd = document.getElementById('sfx-keyboard');
-                    if (kbd) {
-                        kbd.currentTime = 0;
-                        kbd.volume = 0.8;
-                        kbd.loop = true;
-                        kbd.play().catch(e => { });
-                    }
-
-                    // V12 Focus Mode: Duck BG Music deeply for letter reading
-                    fadeBGM(0.3, 800);
-
-                    for (let el of elements) {
-                        const originalText = el.dataset.originalText;
-                        await typeWriterHTML(el, originalText, 25);
-                        await new Promise(r => setTimeout(r, 300));
-                    }
-
-                    // Stop Typing Sound
-                    if (kbd) { kbd.pause(); kbd.currentTime = 0; }
-
-                    // V12: Restore BG Music to full volume after letter is done
-                    fadeBGM(1.0, 1500);
-
-                    // Final Celebration when letter is done! 🌸✨
-                    setTimeout(() => {
-                        flowerShower(); // Sprinkle flowers again
-                        showToast("Love officially delivered! 💜✨");
-                        // Launch some extra hearts
-                        for (let i = 0; i < 15; i++) setTimeout(createHeart, i * 100);
-                    }, 500);
-                }, 900);
+                // 3. Drop the Paper Ball
+                dropPaperBall(startX, startY);
             }
-        }
+
+            function dropPaperBall(x, y) {
+                const ball = document.createElement('div');
+                ball.className = 'paper-ball';
+                ball.style.left = x + 'px';
+                ball.style.top = y + 'px';
+                document.body.appendChild(ball);
+
+                // Calculate goal position (center of screen effectively, or where the letter will be)
+                // Since letter reveals "in place", let's drop it slightly down from the envelope position
+                const dropDistance = 200;
+
+                const animation = ball.animate([
+                    { transform: 'translate(-50%, -50%) rotate(0deg)', top: y + 'px' },
+                    { transform: 'translate(-50%, -50%) rotate(180deg)', top: (y - 50) + 'px', offset: 0.3 }, // Jump up slightly
+                    { transform: 'translate(-50%, -50%) rotate(720deg)', top: (y + dropDistance) + 'px' } // Fall down
+                ], {
+                    duration: 600,
+                    easing: 'cubic-bezier(0.6, -0.28, 0.735, 0.045)' // Bounce/Fall like ease
+                });
+
+                animation.onfinish = () => {
+                    ball.remove();
+                    revealLetter();
+                };
+            }
 
 
-        // Helper animation for "down arrow"
-        const styleSheet = document.createElement("style");
-        styleSheet.innerText = `
+            function typeWriterHTML(element, html, speed) {
+                return new Promise(resolve => {
+                    let i = 0;
+                    element.innerHTML = '';
+                    function type() {
+                        if (i < html.length) {
+                            // Check for HTML tag
+                            if (html.charAt(i) === '<') {
+                                let tag = '';
+                                while (html.charAt(i) !== '>' && i < html.length) {
+                                    tag += html.charAt(i);
+                                    i++;
+                                }
+                                tag += '>'; // Close the tag
+                                i++;
+                                element.innerHTML += tag;
+                                type(); // Skip delay for tags
+                            } else {
+                                element.innerHTML += html.charAt(i);
+                                i++;
+                                setTimeout(type, speed);
+                            }
+                        } else {
+                            resolve();
+                        }
+                    }
+                    type();
+                });
+            }
+
+            async function revealLetter() {
+                const letterWrapper = document.getElementById('letter-wrapper-main');
+                if (letterWrapper) {
+                    // 1. Show wrapper to calculate layout (start invisible)
+                    letterWrapper.style.opacity = '0';
+                    letterWrapper.style.display = 'block';
+                    letterWrapper.style.animation = 'none';
+
+                    // 2. Measure Height of content
+                    const contentDiv = letterWrapper.querySelector('.letter-content');
+                    const elements = contentDiv.querySelectorAll('h2, p');
+
+                    // Ensure text is present for measurement
+                    elements.forEach(el => {
+                        if (el.dataset.originalText) el.innerHTML = el.dataset.originalText;
+                    });
+
+                    const fullHeight = contentDiv.offsetHeight;
+
+                    // 3. Freeze dimensions so it doesn't resize during typing
+                    contentDiv.style.minHeight = fullHeight + 'px';
+
+                    // 4. Save text and clear for animation
+                    elements.forEach(el => {
+                        if (!el.dataset.originalText) {
+                            el.dataset.originalText = el.innerHTML;
+                        }
+                        el.innerHTML = ''; // Clear text
+                    });
+
+                    // Reset opacity for animation
+                    letterWrapper.style.opacity = '';
+
+                    // 5. Restart Animation
+                    letterWrapper.offsetHeight; /* trigger reflow */
+                    letterWrapper.style.animation = 'unfoldLetter 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards';
+
+
+
+                    // Start Typing Sequence after paper unfolds
+                    setTimeout(async () => {
+                        // Start Typing Sound (Boosted for V12)
+                        const kbd = document.getElementById('sfx-keyboard');
+                        if (kbd) {
+                            kbd.currentTime = 0;
+                            kbd.volume = 0.8;
+                            kbd.loop = true;
+                            kbd.play().catch(e => { });
+                        }
+
+                        // V12 Focus Mode: Duck BG Music deeply for letter reading
+                        fadeBGM(0.3, 800);
+
+                        for (let el of elements) {
+                            const originalText = el.dataset.originalText;
+                            await typeWriterHTML(el, originalText, 25);
+                            await new Promise(r => setTimeout(r, 300));
+                        }
+
+                        // Stop Typing Sound
+                        if (kbd) { kbd.pause(); kbd.currentTime = 0; }
+
+                        // V12: Restore BG Music to full volume after letter is done
+                        fadeBGM(1.0, 1500);
+
+                        // Final Celebration when letter is done! 🌸✨
+                        setTimeout(() => {
+                            flowerShower(); // Sprinkle flowers again
+                            showToast("Love officially delivered! 💜✨");
+                            // Launch some extra hearts
+                            for (let i = 0; i < 15; i++) setTimeout(createHeart, i * 100);
+                        }, 500);
+                    }, 900);
+                }
+            }
+
+
+            // Helper animation for "down arrow"
+            const styleSheet = document.createElement("style");
+            styleSheet.innerText = `
             @keyframes bounce {
                 0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
                 40% {transform: translateY(-10px);}
                 60% {transform: translateY(-5px);}
             }
         `;
-        document.head.appendChild(styleSheet);
+            document.head.appendChild(styleSheet);
 
-        // 4. Random Running Teddy
-        const bear = document.querySelector('.bear-wrapper');
+            // 4. Random Running Teddy
+            const bear = document.querySelector('.bear-wrapper');
 
-        function randomizeBear() {
-            // Random Duration: 3s (Sprint) to 8s (Jog)
-            const randomDuration = Math.random() * 5 + 3;
-            bear.style.animationDuration = randomDuration + 's';
+            function randomizeBear() {
+                // Random Duration: 3s (Sprint) to 8s (Jog)
+                const randomDuration = Math.random() * 5 + 3;
+                bear.style.animationDuration = randomDuration + 's';
 
-            // Random Track (Vertical Position): 0px to 100px from bottom (avoid covering buttons too much)
-            const randomBottom = Math.random() * 100;
-            bear.style.bottom = randomBottom + 'px';
+                // Random Track (Vertical Position): 0px to 100px from bottom (avoid covering buttons too much)
+                const randomBottom = Math.random() * 100;
+                bear.style.bottom = randomBottom + 'px';
 
-            // Random Size: slightly smaller or larger? Maybe keep consistent for now.
-        }
-
-        // 4. Kawaii Toast Logic
-        function showToast(message, soundType = null) {
-            // No sound for toast as per user request
-            // Check if toast exists
-            let toast = document.getElementById('kawaii-toast');
-            if (!toast) {
-                toast = document.createElement('div');
-                toast.id = 'kawaii-toast';
-                toast.className = 'kawaii-toast';
-                document.body.appendChild(toast);
+                // Random Size: slightly smaller or larger? Maybe keep consistent for now.
             }
 
-            // Add icon if needed, or just text
-            toast.innerHTML = '<span>💭</span> ' + message;
+            // 4. Kawaii Toast Logic
+            function showToast(message, soundType = null) {
+                // No sound for toast as per user request
+                // Check if toast exists
+                let toast = document.getElementById('kawaii-toast');
+                if (!toast) {
+                    toast = document.createElement('div');
+                    toast.id = 'kawaii-toast';
+                    toast.className = 'kawaii-toast';
+                    document.body.appendChild(toast);
+                }
 
-            // Trigger reflow to ensure animation plays if it was just added
-            void toast.offsetWidth;
+                // Add icon if needed, or just text
+                toast.innerHTML = '<span>💭</span> ' + message;
 
-            toast.classList.add('show');
+                // Trigger reflow to ensure animation plays if it was just added
+                void toast.offsetWidth;
 
-            // Clear previous timeout if any (to prevent early dismissal from rapid clicks)
-            if (toast.timeoutId) clearTimeout(toast.timeoutId);
+                toast.classList.add('show');
 
-            toast.timeoutId = setTimeout(() => {
-                toast.classList.remove('show');
-            }, 3000);
-        }
+                // Clear previous timeout if any (to prevent early dismissal from rapid clicks)
+                if (toast.timeoutId) clearTimeout(toast.timeoutId);
 
-    </script>
+                toast.timeoutId = setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 3000);
+            }
+
+        </script>
+    </div> <!-- End desktop-content -->
 </body>
 
 </html>
