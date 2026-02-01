@@ -1515,7 +1515,7 @@
                 display: none !important;
             }
 
-            /* Hide other fixed elements that might bleed through */
+            /* Hide everythinged through */
             #hearts-container,
             .bokeh,
             .splash-overlay {
@@ -1675,6 +1675,8 @@
         <style>
             #clothesline-scroll-container {
                 height: min(650px, 70vh);
+                min-height: 580px;
+                /* Force enough space for 2 rows of photos */
                 /* Increased height slightly for bigger images */
                 margin: 10px 0;
                 overflow: visible;
