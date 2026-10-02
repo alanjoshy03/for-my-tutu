@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex">
+    <title>For my Tutuu ✨</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <style>
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+        }
+
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(120deg, #E6E6FA 0%, #F3E5F5 100%);
+            font-family: 'Poppins', 'Segoe UI', sans-serif;
+            color: #7E57C2;
+            text-align: center;
+        }
+
+        a {
+            color: #7E57C2;
+        }
+    </style>
+</head>
+
+<body>
+    <p>Taking you home... 💜 <noscript><a href="/">Tap here</a></noscript></p>
+
+    <script>
+        // GitHub Pages serves this file for every unknown address.
+        // Work out the site root (project sites live under /repo-name/, user/custom-domain sites at /),
+        // then send the visitor to the home page.
+        (function () {
+            var seg = location.pathname.split('/')[1];
+            var root = '/';
+
+            function go(base) {
+                location.replace(base);
+            }
+
+            if (!seg || !/\.github\.io$/i.test(location.hostname)) {
+                go(root);
+                return;
+            }
+
+            // On *.github.io the first path segment is probably the repo name. Confirm it by checking
+            // that the site's favicon really lives there; otherwise fall back to the domain root.
+            var candidate = '/' + seg + '/';
+            fetch(candidate + 'favicon.png', { method: 'HEAD' })
+                .then(function (r) { go(r.ok ? candidate : root); })
+                .catch(function () { go(root); });
+        })();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,182 @@
+/* ==========================================================================
+   core.css  -  design tokens, reset, page layout, scroll-reveal utilities,
+                and the desktop-only gate. Loaded first.
+   ========================================================================== */
+
+:root {
+    --lavender-light: #E6E6FA;
+    --lavender-med: #D1C4E9;
+    --lavender-dark: #7E57C2;
+    --lavender-star: #B39DDB;
+    --text-dark: #333;
+    --text-med: #555;
+    --accent-pink: #ff6b6b;
+    --page-gradient: linear-gradient(120deg, var(--lavender-light) 0%, #F3E5F5 100%);
+    --ease-pop: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    --ease-out: cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: var(--page-gradient);
+    overflow-x: hidden;
+    color: var(--text-dark);
+    /* 32px cursor: bigger images fall back to a slow software cursor on weak machines */
+    cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 40 40' style='fill:black;font-size:32px;'><text y='50%'>🪻</text></svg>") 13 0, auto;
+    min-height: 100vh;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+/* --- Sections ----------------------------------------------------------- */
+
+.section,
+.hero {
+    min-height: 100vh;
+    min-height: 100dvh;
+    padding: clamp(30px, 4vh, 60px) 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+    z-index: 1;
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    scroll-snap-align: start;
+}
+
+/* Keep the footer from colliding with the letter */
+#quiz-section {
+    padding-bottom: 60px;
+}
+
+.hero-title {
+    margin-bottom: clamp(40px, 8vh, 80px);
+    font-family: 'Dancing Script', cursive;
+    font-size: clamp(3rem, 10vh, 5rem);
+    background: linear-gradient(135deg, #a675c5 0%, #be7592 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(2px 2px 0px rgba(255, 255, 255, 0.5));
+    line-height: 1.2;
+}
+
+.kawaii-text {
+    font-family: 'Indie Flower', cursive;
+    font-size: clamp(1.4rem, 4vh, 1.8rem);
+    line-height: 1.2;
+    color: var(--text-med);
+    margin-bottom: 5px;
+}
+
+.time-count {
+    font-family: 'Indie Flower', cursive;
+    font-size: clamp(2rem, 6vh, 2.8rem);
+    color: var(--accent-pink);
+    margin: 5px 0;
+    font-weight: bold;
+    text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.05);
+    line-height: 1.1;
+}
+
+footer {
+    padding: 40px;
+    text-align: center;
+    color: white;
+    font-size: 0.9rem;
+    margin-top: auto;
+}
+
+.site-footer {
+    position: absolute;
+    bottom: 8px;
+    width: 100%;
+    text-align: center;
+    color: rgba(44, 38, 38, 0.658);
+    font-size: 0.75rem;
+    pointer-events: none;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* --- Desktop-only gate ---------------------------------------------------- */
+/* Touch-first devices get html.device-blocked from the script in <head>;
+   any window <= 1024px wide is blocked here. Nothing is downloaded or started. */
+
+#mobile-warning {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    background: var(--page-gradient);
+    z-index: 999999;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 30px;
+}
+
+#mobile-warning h1 {
+    font-family: 'Dancing Script', cursive;
+    font-size: 2.5rem;
+    color: var(--lavender-dark);
+    margin-bottom: 20px;
+}
+
+#mobile-warning p {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.1rem;
+    color: var(--text-med);
+    max-width: 80%;
+    margin: 0 auto;
+}
+
+html.device-blocked #mobile-warning {
+    display: flex;
+}
+
+html.device-blocked #desktop-content,
+html.device-blocked #hearts-container,
+html.device-blocked .splash-overlay {
+    display: none !important;
+}
+
+html.device-blocked,
+html.device-blocked body {
+    overflow: hidden;
+}
+
+@media screen and (max-width: 1024px) {
+    #mobile-warning {
+        display: flex;
+    }
+
+    #desktop-content,
+    #hearts-container,
+    .splash-overlay {
+        display: none !important;
+    }
+
+    html,
+    body {
+        overflow: hidden;
+    }
+}

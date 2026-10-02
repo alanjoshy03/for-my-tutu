@@ -1,0 +1,236 @@
+/* ==========================================================================
+   gallery.css  -  the clothesline photo gallery ("Exhibit A").
+   ========================================================================== */
+
+#clothesline-scroll-container {
+    position: relative;
+    width: 100%;
+    height: min(650px, 70vh);
+    min-height: 580px;
+    margin: 10px 0;
+    padding: 20px 0;
+    /* Photos are cut off at the sides (clip, not hidden: no scroll box, no offscreen surface),
+       but may still sway above / below. The soft edge fade is two cheap gradient overlays below
+       instead of mask-image, which forced the whole animated gallery through an offscreen mask every frame. */
+    overflow-x: clip;
+    overflow-y: visible;
+}
+
+#clothesline-scroll-container::before,
+#clothesline-scroll-container::after {
+    content: '';
+    position: absolute;
+    top: -10px;
+    bottom: -10px;
+    width: 6%;
+    z-index: 20;
+    pointer-events: none;
+}
+
+/* Colours match the page gradient at the gallery's left / right edges */
+#clothesline-scroll-container::before {
+    left: 0;
+    background: linear-gradient(to right, #EAE6F9 5%, rgba(234, 230, 249, 0));
+}
+
+#clothesline-scroll-container::after {
+    right: 0;
+    background: linear-gradient(to left, #EFE5F6 5%, rgba(239, 229, 246, 0));
+}
+
+.clothesline-row {
+    position: relative;
+    width: 100%;
+    height: 50%;
+    overflow: visible;
+}
+
+.clothesline-track {
+    display: flex;
+    width: max-content;
+    position: absolute;
+    top: 0;
+    /* One GPU layer per scrolling row (not per photo) */
+    will-change: transform;
+}
+
+.clothesline-track:hover {
+    animation-play-state: paused !important;
+}
+
+.scroll-left .clothesline-track {
+    animation: scrollLeft 80s linear infinite;
+}
+
+.scroll-right .clothesline-track {
+    animation: scrollRight 80s linear infinite;
+}
+
+/* Rows only move while on screen (--run is toggled from JS) */
+.scroll-left .clothesline-track,
+.scroll-right .clothesline-track {
+    animation-play-state: var(--run, running);
+}
+
+@keyframes scrollLeft {
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(-33.3333%);
+    }
+}
+
+@keyframes scrollRight {
+    from {
+        transform: translateX(-33.3333%);
+    }
+
+    to {
+        transform: translateX(0);
+    }
+}
+
+.track-rope {
+    position: absolute;
+    top: 30px;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: #8D6E63;
+    border-bottom: 1px solid #5D4037;
+    z-index: 1;
+}
+
+.hanging-photo {
+    display: inline-block;
+    vertical-align: top;
+    margin: 10px 25px 0;
+    position: relative;
+    transform-origin: 50% -20px;
+    /* Hidden / displaced until the wind-drop plays */
+    transform: rotate(60deg);
+    opacity: 0;
+    z-index: 2;
+    /* Each photo is independent: a change in one never re-lays-out its neighbours */
+    contain: layout style;
+}
+
+/* Drop + sway once the gallery is revealed */
+.reveal-fade.active .hanging-photo {
+    animation-name: dropWind, sway;
+    animation-duration: 2.5s, 6s;
+    animation-timing-function: cubic-bezier(0.25, 1, 0.5, 1), ease-in-out;
+    animation-iteration-count: 1, infinite;
+    animation-fill-mode: forwards, none;
+    /* delays / sway duration are randomised per photo inline from JS */
+}
+
+.hanging-photo::before {
+    content: '';
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 8px;
+    height: 25px;
+    background: #D7CCC8;
+    border-left: 2px solid #5D4037;
+    border-radius: 2px;
+    z-index: 5;
+    box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.photo-inner {
+    background: white;
+    padding: 10px 10px 40px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 2px;
+    transition: transform 0.3s ease;
+    width: 180px;
+}
+
+.photo-inner:hover {
+    transform: scale(1.05) rotate(0deg) !important;
+    z-index: 10;
+}
+
+.photo-inner img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    background: #f0f0f0;
+}
+
+.photo-inner p {
+    margin-top: 10px;
+    font-family: 'Indie Flower', cursive;
+    color: #555;
+    font-size: 1.1rem;
+    text-align: center;
+}
+
+@keyframes dropWind {
+    0% {
+        transform: rotate(60deg);
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 1;
+    }
+
+    50% {
+        transform: rotate(-10deg);
+    }
+
+    75% {
+        transform: rotate(4deg);
+    }
+
+    100% {
+        transform: rotate(2deg);
+        opacity: 1;
+    }
+}
+
+@keyframes sway {
+
+    0%,
+    100% {
+        transform: rotate(2deg);
+    }
+
+    50% {
+        transform: rotate(-2deg);
+    }
+}
+
+/* --- Short desktop windows: shrink the gallery so the section never outgrows the screen --- */
+@media (max-height: 820px) {
+    #clothesline-scroll-container {
+        zoom: 0.85;
+    }
+}
+
+@media (max-height: 700px) {
+    #clothesline-scroll-container {
+        zoom: 0.7;
+    }
+}
+
+/* --- Slow machines: photos drop in once, then hang still (no 36 endless sways) --- */
+html.perf-lite .reveal-fade.active .hanging-photo {
+    animation-name: dropWind;
+    animation-duration: 2.5s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+}
+
+/* Cheaper photo shadows while the rows slide */
+html.perf-lite .photo-inner {
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+}
